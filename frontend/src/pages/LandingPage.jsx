@@ -6,6 +6,10 @@ import LoanCalculator from "../components/LoanCalculator";
 import DoubtSolver from "../components/DoubtSolver";
 import BlurFade from "../components/presets/BlurFade";
 import NumberTicker from "../components/presets/NumberTicker";
+import CardSpotlight from "../components/presets/CardSpotlight";
+import TextEffect from "../components/presets/TextEffect";
+import EditorialCTA from "../components/presets/EditorialCTA";
+import ScrollReveal from "../components/presets/ScrollReveal";
 import { 
   ShieldCheck, 
   ArrowUpRight, 
@@ -20,7 +24,7 @@ import {
 
 /**
  * LandingPage
- * Sourced from minimal.gallery / getlayers.ai / 21st.dev / Magic UI / cta.gallery
+ * Sourced from minimal.gallery / getlayers.ai / 21st.dev / Magic UI / cta.gallery / ui.aceternity.com
  * Adapted to CreditSea private-banking aesthetic
  */
 export default function LandingPage() {
@@ -109,27 +113,27 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Core Principles Section */}
+      {/* Core Principles Section with CardSpotlight preset */}
       <section className="py-20 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-[#DDD9D0]">
-        <BlurFade delay={0.1} yOffset={8}>
+        <ScrollReveal direction="up">
           <div className="max-w-2xl mb-14 text-left space-y-2">
             <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-semibold">
               Operational Principles
             </span>
             <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#171717] tracking-tight">
-              Built for certainty, not speculation.
+              <TextEffect per="word">Built for certainty, not speculation.</TextEffect>
             </h2>
             <p className="text-sm text-[#6F6B63] font-light leading-relaxed">
               Every advance issued by CreditSea is grounded in strict underwriting discipline, contractual transparency, and zero predatory fee structures.
             </p>
           </div>
-        </BlurFade>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Pillar 1 */}
           <BlurFade delay={0.15} yOffset={8}>
-            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+            <CardSpotlight className="p-7 h-full flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
                   <Clock className="w-5 h-5 text-[#B49A68]" />
@@ -139,15 +143,15 @@ export default function LandingPage() {
                   Our automated Business Rule Engine evaluates verified salary slips, PAN credentials, and net monthly income in under 10 minutes without manual friction.
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63] mt-6">
                 BRE Rule: Age 23–50 · Net Salary ₹25K+
               </div>
-            </div>
+            </CardSpotlight>
           </BlurFade>
 
           {/* Pillar 2 */}
           <BlurFade delay={0.2} yOffset={8}>
-            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+            <CardSpotlight className="p-7 h-full flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
                   <Percent className="w-5 h-5 text-[#B49A68]" />
@@ -157,15 +161,15 @@ export default function LandingPage() {
                   We apply a flat 12% annual simple interest rate. Zero compounding interest, zero hidden platform charges, and zero early settlement penalties.
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63] mt-6">
                 Amortization: (P × 12% × T) ÷ 365
               </div>
-            </div>
+            </CardSpotlight>
           </BlurFade>
 
           {/* Pillar 3 */}
           <BlurFade delay={0.25} yOffset={8}>
-            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+            <CardSpotlight className="p-7 h-full flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
                   <Building2 className="w-5 h-5 text-[#B49A68]" />
@@ -175,10 +179,10 @@ export default function LandingPage() {
                   Disbursements and repayments route directly through dedicated escrow accounts operated by Meghdoot Mercantile Pvt Ltd (RBI-registered NBFC).
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63] mt-6">
                 Escrow Node · HDFC Bank Partner
               </div>
-            </div>
+            </CardSpotlight>
           </BlurFade>
 
         </div>
@@ -186,24 +190,27 @@ export default function LandingPage() {
 
       {/* Facility Calculator Section */}
       <section id="calculator" className="py-20 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <BlurFade delay={0.1} yOffset={8}>
+        <ScrollReveal direction="up">
           <div className="max-w-2xl mb-12 text-left space-y-2">
             <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-semibold">
               Interactive Planning Tool
             </span>
             <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#171717] tracking-tight">
-              Calculate your facility terms.
+              <TextEffect per="word">Calculate your facility terms.</TextEffect>
             </h2>
             <p className="text-sm text-[#6F6B63] font-light leading-relaxed">
               Adjust principal and tenure to review the transparent simple-interest repayment breakdown before submitting an application.
             </p>
           </div>
-        </BlurFade>
+        </ScrollReveal>
 
         <BlurFade delay={0.15} yOffset={10}>
           <LoanCalculator />
         </BlurFade>
       </section>
+
+      {/* High-Converting Editorial CTA Section (cta.gallery / 21st.dev) */}
+      <EditorialCTA />
 
       {/* Institutional Inquiries Desk widget */}
       <DoubtSolver />

@@ -6,6 +6,7 @@ import NumberTicker from "../components/presets/NumberTicker";
 import InstitutionalGauge from "../components/presets/InstitutionalGauge";
 import BlurFade from "../components/presets/BlurFade";
 import { AnimatedList } from "../components/presets/AnimatedList";
+import CardSpotlight from "../components/presets/CardSpotlight";
 import { 
   ShieldCheck, 
   Award, 
@@ -107,7 +108,7 @@ export default function DashboardHome() {
       <BlurFade delay={0.1} yOffset={8}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 1: Total Disbursed Capital */}
-          <div className="bg-white border border-[#DDD9D0] rounded-lg p-6 space-y-3">
+          <CardSpotlight className="p-6 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6F6B63]">Disbursed Capital</span>
               <Wallet className="w-4 h-4 text-[#B49A68]" />
@@ -122,10 +123,10 @@ export default function DashboardHome() {
                 <span className="font-mono text-[#171717]">{(stats?.disbursed?.count || 0) + (stats?.closed?.count || 0)}</span> lifetime loans funded
               </p>
             </div>
-          </div>
+          </CardSpotlight>
 
           {/* Card 2: Total Collections */}
-          <div className="bg-white border border-[#DDD9D0] rounded-lg p-6 space-y-3">
+          <CardSpotlight className="p-6 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6F6B63]">Recovered Capital</span>
               <Coins className="w-4 h-4 text-[#476353]" />
@@ -140,10 +141,10 @@ export default function DashboardHome() {
                 <span className="font-mono text-[#476353] font-medium">{stats?.closed?.count || 0}</span> accounts fully settled
               </p>
             </div>
-          </div>
+          </CardSpotlight>
 
           {/* Card 3: Active Balance Due */}
-          <div className="bg-white border border-[#DDD9D0] rounded-lg p-6 space-y-3">
+          <CardSpotlight className="p-6 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6F6B63]">Active Balance Due</span>
               <CreditCard className="w-4 h-4 text-[#A17E43]" />
@@ -158,10 +159,10 @@ export default function DashboardHome() {
                 Across <span className="font-mono text-[#A17E43] font-medium">{stats?.disbursed?.count || 0}</span> active credit lines
               </p>
             </div>
-          </div>
+          </CardSpotlight>
 
           {/* Card 4: Portfolio Recovery Rate with InstitutionalGauge preset */}
-          <div className="bg-white border border-[#DDD9D0] rounded-lg p-6 flex items-center justify-between">
+          <CardSpotlight className="p-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6F6B63] block">Recovery Ratio</span>
               <div className="text-2xl font-serif font-medium text-[#171717]">
@@ -176,7 +177,7 @@ export default function DashboardHome() {
               showPercent={false}
               color="#476353"
             />
-          </div>
+          </CardSpotlight>
         </div>
       </BlurFade>
 

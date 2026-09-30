@@ -12,6 +12,7 @@ import {
   Percent
 } from "lucide-react";
 import NumberTicker from "./presets/NumberTicker";
+import TextEffect from "./presets/TextEffect";
 
 /**
  * HeroSection Component
@@ -47,10 +48,12 @@ export default function HeroSection() {
               <span className="text-[#171717] font-medium">RBI NBFC Partner</span>
             </div>
 
-            {/* 2. Large Editorial Headline */}
+            {/* 2. Large Editorial Headline with TextEffect preset */}
             <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-serif font-medium text-[#171717] tracking-tight leading-[1.08]">
-              Credit structured with <br className="hidden sm:inline" />
-              <span className="italic font-serif text-[#111111]">absolute clarity.</span>
+              <TextEffect per="word" delay={0.1}>Credit structured with</TextEffect> <br className="hidden sm:inline" />
+              <span className="italic font-serif text-[#111111]">
+                <TextEffect per="word" delay={0.25}>absolute clarity.</TextEffect>
+              </span>
             </h1>
 
             {/* 3. Concise Supporting Paragraph */}

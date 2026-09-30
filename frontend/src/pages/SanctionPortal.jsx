@@ -1,6 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { API_URL } from "../lib/api";
+import { Tabs } from "../components/presets/Tabs";
+import CircleLoader from "../components/presets/CircleLoader";
+import Badge from "../components/presets/Badge";
 import { 
   Check, 
   X, 
@@ -159,20 +162,15 @@ export default function SanctionPortal() {
         </div>
 
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <span className="text-xs font-mono text-[#6F6B63]">Employment:</span>
-          {["ALL", "Salaried", "Self-Employed"].map((mode) => (
-            <button
-              key={mode}
-              onClick={() => setEmploymentFilter(mode)}
-              className={`px-3 py-1.5 rounded text-xs font-mono transition ${
-                employmentFilter === mode
-                  ? "bg-[#111111] text-white"
-                  : "bg-[#F6F4EF] border border-[#DDD9D0] text-[#6F6B63] hover:text-[#171717]"
-              }`}
-            >
-              {mode}
-            </button>
-          ))}
+          <Tabs
+            tabs={[
+              { id: "ALL", label: "All Applicants" },
+              { id: "Salaried", label: "Salaried" },
+              { id: "Self-Employed", label: "Self-Employed" }
+            ]}
+            activeTab={employmentFilter}
+            onChange={setEmploymentFilter}
+          />
         </div>
       </div>
 
@@ -180,8 +178,7 @@ export default function SanctionPortal() {
       <div className="bg-white border border-[#DDD9D0] rounded-lg overflow-hidden">
         {loading ? (
           <div className="text-center py-20">
-            <div className="w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-xs font-mono text-[#6F6B63] mt-3">Accessing Sanction Queue...</p>
+            <CircleLoader size={44} strokeWidth={3} label="Accessing Sanction Queue..." />
           </div>
         ) : filteredLoans.length === 0 ? (
           <div className="py-20 text-center text-xs text-[#6F6B63] font-light bg-[#F6F4EF]">

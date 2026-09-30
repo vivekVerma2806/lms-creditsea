@@ -1,6 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { API_URL } from "../lib/api";
+import CircleLoader from "../components/presets/CircleLoader";
+import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../components/presets/Dialog";
+import Badge from "../components/presets/Badge";
 import { 
   Send, 
   Calendar, 
@@ -9,9 +12,9 @@ import {
   Search, 
   Mail, 
   User, 
-  Wallet,
-  AlertCircle,
-  Building
+  Wallet, 
+  AlertCircle, 
+  Building 
 } from "lucide-react";
 
 export default function DisbursementPortal() {
@@ -133,8 +136,7 @@ export default function DisbursementPortal() {
       <div className="bg-white border border-[#DDD9D0] rounded-lg overflow-hidden">
         {loading ? (
           <div className="text-center py-20">
-            <div className="w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-xs font-mono text-[#6F6B63] mt-3">Accessing Disbursement Queue...</p>
+            <CircleLoader size={44} strokeWidth={3} label="Accessing Disbursement Queue..." />
           </div>
         ) : filteredLoans.length === 0 ? (
           <div className="py-20 text-center text-xs text-[#6F6B63] font-light bg-[#F6F4EF]">
@@ -201,10 +203,10 @@ export default function DisbursementPortal() {
         )}
       </div>
 
-      {/* Disbursement Confirmation Dialog */}
-      {selectedDisburseLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white max-w-md w-full rounded-lg p-6 md:p-8 border border-[#DDD9D0] shadow-2xl relative space-y-5 animate-scaleUp">
+      {/* Disbursement Confirmation Dialog (ui.shadcn.com preset) */}
+      <Dialog open={!!selectedDisburseLoan} onOpenChange={(open) => !open && setSelectedDisburseLoan(null)}>
+        {selectedDisburseLoan && (
+          <div className="space-y-5">
             <div className="flex items-center gap-3 border-b border-[#DDD9D0] pb-4">
               <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#111111]">
                 <Send className="w-5 h-5 text-[#B49A68]" />
@@ -236,11 +238,11 @@ export default function DisbursementPortal() {
               By confirming, you certify that KYC criteria have been strictly satisfied. Funds will be routed via the Meghdoot Mercantile institutional pooling escrow node.
             </p>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <DialogFooter>
               <button
                 type="button"
                 onClick={() => setSelectedDisburseLoan(null)}
-                className="px-4 py-2 border border-[#DDD9D0] text-[#6F6B63] rounded text-xs font-mono uppercase tracking-wider"
+                className="px-4 py-2 border border-[#DDD9D0] text-[#6F6B63] rounded text-xs font-mono uppercase tracking-wider hover:bg-[#EEEBE4] transition"
                 disabled={processing}
               >
                 Cancel
@@ -253,10 +255,10 @@ export default function DisbursementPortal() {
               >
                 {processing ? "Authorizing Transfer..." : "Confirm & Release"}
               </button>
-            </div>
+            </DialogFooter>
           </div>
-        </div>
-      )}
+        )}
+      </Dialog>
     </div>
   );
 }

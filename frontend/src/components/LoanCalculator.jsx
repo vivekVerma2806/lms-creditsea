@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import InstitutionalGauge from "./presets/InstitutionalGauge";
+import InteractiveToggle from "./presets/InteractiveToggle";
 
 export default function LoanCalculator() {
   const [amount, setAmount] = useState(150000);
   const [tenure, setTenure] = useState(90);
+  const [detailedMode, setDetailedMode] = useState(false);
 
   const annualInterestRate = 0.12; // 12% flat APR (simple interest)
   const interestAmount = (amount * annualInterestRate * tenure) / 365;
@@ -13,6 +16,7 @@ export default function LoanCalculator() {
 
   const principalRatio = (amount / totalRepayment) * 100;
   const interestRatio = (interestAmount / totalRepayment) * 100;
+  const limitUtilization = (amount / 500000) * 100;
 
   return (
     <div className="bg-white border border-[#DDD9D0] rounded-xl p-6 md:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
@@ -84,6 +88,25 @@ export default function LoanCalculator() {
               </div>
               <p className="text-[10px] text-[#969188]">Calculated only for days principal remains active.</p>
             </div>
+          </div>
+
+          {/* Institutional Utilization Gauge & Interactive Toggle */}
+          <div className="pt-5 border-t border-[#EEEBE4] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <InstitutionalGauge
+              percentage={limitUtilization}
+              size={54}
+              strokeWidth={4}
+              color="#B49A68"
+              trackColor="#DDD9D0"
+              label="Facility Utilization"
+              sublabel="₹5,00,000 Maximum Cap"
+            />
+            <InteractiveToggle
+              checked={detailedMode}
+              onChange={setDetailedMode}
+              label="Daily Accrual View"
+              description="Simple vs day-by-day"
+            />
           </div>
         </div>
 

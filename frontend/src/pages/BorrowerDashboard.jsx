@@ -27,6 +27,8 @@ import { API_URL } from "../lib/api";
 import InstitutionalGauge from "../components/presets/InstitutionalGauge";
 import NumberTicker from "../components/presets/NumberTicker";
 import BlurFade from "../components/presets/BlurFade";
+import CircleLoader from "../components/presets/CircleLoader";
+import Badge from "../components/presets/Badge";
 
 export default function BorrowerDashboard() {
   const navigate = useNavigate();
@@ -232,8 +234,7 @@ export default function BorrowerDashboard() {
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-28">
-              <div className="w-10 h-10 border-2 border-[#111111] border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-[#6F6B63] mt-4 text-xs font-mono uppercase tracking-widest">Accessing Ledger Data...</p>
+              <CircleLoader size={48} strokeWidth={3} label="Accessing Ledger Data..." />
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
