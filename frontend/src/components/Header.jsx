@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LogOut, User, Menu, X } from "lucide-react";
+import { LogOut, User, Menu, X, ArrowUpRight } from "lucide-react";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -31,10 +31,10 @@ export default function Header() {
   };
 
   const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Calculators", href: "/calculators" },
-    { label: "Contact", href: "/contact" },
+    { label: "Overview", href: "/" },
+    { label: "Institutional Principles", href: "/about" },
+    { label: "Facility Calculator", href: "/calculators" },
+    { label: "Contact & Desk", href: "/contact" },
   ];
 
   const getDashboardLink = () => {
@@ -43,29 +43,37 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#F6F4EF]/90 backdrop-blur-md border-b border-[#DDD9D0] transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition duration-300 shadow-md shadow-blue-200">
-              <span className="text-white font-extrabold text-base">CS</span>
+          
+          {/* Minimalist Institutional Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 rounded-lg bg-[#111111] border border-[#171717] flex items-center justify-center transition-transform group-hover:scale-95 duration-200">
+              <span className="text-[#F6F4EF] font-mono text-xs font-bold tracking-tight">CS</span>
             </div>
-            <span className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
-              CreditSea
-            </span>
+            <div className="flex flex-col">
+              <span className="font-bold text-lg text-[#171717] tracking-tight leading-none">
+                CreditSea
+              </span>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#6F6B63] mt-0.5">
+                Capital Platform
+              </span>
+            </div>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`text-sm font-semibold transition-colors duration-200 ${
-                    isActive ? "text-blue-600" : "text-gray-600 hover:text-blue-600"
+                  className={`text-xs font-semibold tracking-wide transition-colors duration-150 py-1 border-b-2 ${
+                    isActive 
+                      ? "text-[#171717] border-[#B49A68]" 
+                      : "text-[#6F6B63] border-transparent hover:text-[#171717] hover:border-[#DDD9D0]"
                   }`}
                 >
                   {link.label}
@@ -74,87 +82,88 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Desktop Auth Actions */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center gap-3">
             {isLoggedIn ? (
               <>
                 <Link
                   to={getDashboardLink()}
-                  className="px-5 py-2.5 bg-blue-50 text-blue-700 font-bold text-sm rounded-xl hover:bg-blue-100 transition flex items-center gap-2"
+                  className="px-4 py-2 bg-white border border-[#DDD9D0] text-[#171717] font-semibold text-xs rounded-lg hover:border-[#B49A68] hover:bg-[#F6F4EF] transition flex items-center gap-2"
                 >
-                  <User className="w-4 h-4" />
-                  My Portal
+                  <User className="w-3.5 h-3.5 text-[#B49A68]" />
+                  <span>{role === "Borrower" ? "Client Workspace" : `${role} Desk`}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="p-2.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition duration-200"
+                  className="p-2 text-[#6F6B63] hover:text-[#874F4F] hover:bg-[#EEEBE4] rounded-lg transition"
                   title="Sign Out"
                 >
-                  <LogOut className="w-5 h-5" />
+                  <LogOut className="w-4 h-4" />
                 </button>
               </>
             ) : (
               <>
                 <Link
                   to="/auth/login"
-                  className="px-5 py-2.5 text-gray-700 hover:text-blue-600 font-bold text-sm transition"
+                  className="px-4 py-2 text-[#6F6B63] hover:text-[#171717] font-semibold text-xs transition"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/auth/register"
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-100 hover:shadow-blue-200 transition"
+                  className="px-4.5 py-2 bg-[#111111] hover:bg-[#222222] text-[#F6F4EF] font-semibold text-xs rounded-lg border border-[#111111] hover:border-[#B49A68] transition duration-150 flex items-center gap-1.5 shadow-sm"
                 >
-                  Apply Now
+                  <span>Apply for Credit</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#B49A68]" />
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition"
+              className="p-2 text-[#171717] hover:bg-[#EEEBE4] rounded-lg transition"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 animate-slideDown">
+        <div className="md:hidden bg-[#F6F4EF] border-b border-[#DDD9D0]">
           <div className="px-4 pt-2 pb-6 space-y-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-3 text-base font-semibold text-gray-750 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition"
+                className="block px-3 py-2.5 text-sm font-semibold text-[#171717] hover:bg-[#EEEBE4] rounded-lg transition"
               >
                 {link.label}
               </Link>
             ))}
-            <div className="pt-4 border-t border-gray-100 flex flex-col gap-3 px-4">
+            <div className="pt-4 border-t border-[#DDD9D0] flex flex-col gap-2.5">
               {isLoggedIn ? (
                 <>
                   <Link
                     to={getDashboardLink()}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-3 bg-blue-50 text-blue-700 text-center font-bold text-sm rounded-xl flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-white border border-[#DDD9D0] text-[#171717] text-center font-semibold text-xs rounded-lg"
                   >
-                    <User className="w-4 h-4" /> My Portal
+                    Open Workspace
                   </Link>
                   <button
                     onClick={() => {
                       setMobileMenuOpen(false);
                       handleLogout();
                     }}
-                    className="w-full py-3 bg-red-50 text-red-650 font-bold text-sm rounded-xl flex items-center justify-center gap-2"
+                    className="w-full py-2.5 text-[#874F4F] text-center font-semibold text-xs hover:bg-[#EEEBE4] rounded-lg"
                   >
-                    <LogOut className="w-4 h-4" /> Sign Out
+                    Sign Out
                   </button>
                 </>
               ) : (
@@ -162,16 +171,16 @@ export default function Header() {
                   <Link
                     to="/auth/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-3 border border-gray-200 text-gray-700 text-center font-bold text-sm rounded-xl"
+                    className="w-full py-2.5 border border-[#DDD9D0] text-[#171717] text-center font-semibold text-xs rounded-lg"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/auth/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-3 bg-blue-600 text-white text-center font-bold text-sm rounded-xl"
+                    className="w-full py-2.5 bg-[#111111] text-[#F6F4EF] text-center font-semibold text-xs rounded-lg"
                   >
-                    Apply Now
+                    Apply for Credit
                   </Link>
                 </>
               )}

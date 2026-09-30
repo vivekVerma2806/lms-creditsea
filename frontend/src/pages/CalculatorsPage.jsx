@@ -1,42 +1,54 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import LoanCalculator from "../components/LoanCalculator";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, ShieldCheck } from "lucide-react";
 
 export default function CalculatorsPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+    <div className="min-h-screen flex flex-col bg-[#F6F4EF] text-[#171717]">
       <Header />
 
-      <main className="flex-grow pt-32 pb-20">
+      <main className="flex-grow pt-32 pb-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Financial Calculators</h1>
-            <p className="text-xl text-gray-650 max-w-2xl mx-auto font-medium">
-              Plan your finances accurately. Estimate your EMI and repayment timeline instantly with our beginner-friendly tools.
+          
+          {/* Header */}
+          <div className="max-w-3xl mb-12 text-left">
+            <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-bold">
+              Facility Planning
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-black text-[#171717] mt-2 tracking-tight">
+              Facility Terms Calculator
+            </h1>
+            <p className="text-sm sm:text-base text-[#6F6B63] mt-2 leading-relaxed">
+              Model advance allocations, examine daily interest accrual, and review exact settlement schedules prior to application submission.
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto">
-            <LoanCalculator />
-          </div>
+          {/* Calculator Component */}
+          <LoanCalculator />
 
-          {/* Details Box */}
-          <div className="max-w-4xl mx-auto mt-20 p-8 bg-[#fdfdfd] border border-gray-150 rounded-3xl text-left shadow-sm">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <HelpCircle className="w-6 h-6 text-blue-600 animate-bounce" />
-              How we calculate interest
-            </h3>
-            <p className="text-[#333] leading-relaxed mb-4 text-sm font-semibold">
-              All personal and credit builder loans offered via CreditSea are computed using a <strong>Simple Interest method</strong>. This means the interest cost is determined solely on the base principal amount of the loan, the tenure of the loan (in days), and the annual percentage rate (APR).
-            </p>
-            <div className="bg-gray-50 p-4 rounded-2xl font-mono text-sm inline-block text-gray-700 border border-gray-150">
-              Interest = (Principal × Rate × Days) ÷ 365
+          {/* Institutional Calculation Disclosure */}
+          <div className="max-w-5xl mx-auto mt-14 p-7 bg-white border border-[#DDD9D0] rounded-xl text-left space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-[#EEEBE4]">
+              <ShieldCheck className="w-5 h-5 text-[#B49A68]" />
+              <h3 className="text-base font-bold text-[#171717]">
+                Regulatory Interest Calculation Methodology
+              </h3>
             </div>
-            <p className="text-xs text-gray-500 mt-4 font-semibold">
-              For example: A loan of ₹1,00,000 at 12% p.a. for a period of 90 days would accrue a simple interest fee of exactly (₹1,00,000 × 0.12 × 90) ÷ 365 = ₹2,959. Your total repayment amount is ₹1,02,959.
+            
+            <p className="text-xs text-[#6F6B63] leading-relaxed">
+              In accordance with Reserve Bank of India Fair Practice Code directions, all CreditSea advances employ a strict <strong>Simple Interest method</strong>. Interest accrues solely on the active principal balance without monthly or daily compounding.
+            </p>
+
+            <div className="bg-[#F6F4EF] p-3.5 rounded-lg font-mono text-xs text-[#171717] border border-[#DDD9D0] inline-block">
+              Daily Interest = (Principal × 12.00% × Tenure in Days) ÷ 365
+            </div>
+
+            <p className="text-[11px] text-[#969188] leading-normal">
+              Illustration: An approved advance of ₹1,00,000 for 90 days accrues exactly (₹1,00,000 × 0.12 × 90) ÷ 365 = ₹2,958.90 simple interest. The total repayment obligation upon maturity is ₹1,02,959. No account maintenance or platform subscription fees are deducted.
             </p>
           </div>
+
         </div>
       </main>
 

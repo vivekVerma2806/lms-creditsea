@@ -1,150 +1,171 @@
 import { useState } from "react";
-import { Info } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 
 export default function LoanCalculator() {
-  const [amount, setAmount] = useState(100000);
-  const [tenure, setTenure] = useState(180);
+  const [amount, setAmount] = useState(150000);
+  const [tenure, setTenure] = useState(90);
 
-  const interestRate = 0.12; // 12% p.a.
-  const interest = (amount * interestRate * tenure) / 365;
-  const totalRepayment = amount + interest;
+  const annualInterestRate = 0.12; // 12% flat APR (simple interest)
+  const interestAmount = (amount * annualInterestRate * tenure) / 365;
+  const totalRepayment = amount + interestAmount;
+  const dailyCost = interestAmount / tenure;
 
-  // Donut chart calculations
-  const radius = 60;
-  const circumference = 2 * Math.PI * radius;
-  const interestRatio = interest / totalRepayment;
-  const interestOffset = circumference * (1 - interestRatio);
-  const principalOffset = circumference;
+  const principalRatio = (amount / totalRepayment) * 100;
+  const interestRatio = (interestAmount / totalRepayment) * 100;
 
   return (
-    <div className="bg-white border border-gray-150 rounded-3xl p-6 md:p-8 shadow-lg shadow-gray-150/40">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
+    <div className="bg-white border border-[#DDD9D0] rounded-xl p-6 md:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
-        {/* Sliders Area (7 cols) */}
+        {/* Sliders Column (7 cols) */}
         <div className="lg:col-span-7 space-y-8">
           <div>
-            <div className="flex justify-between items-center mb-3">
-              <label className="text-gray-700 font-semibold text-sm">Loan Amount</label>
-              <span className="text-blue-600 font-extrabold text-xl">₹{amount.toLocaleString()}</span>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs uppercase tracking-wider font-semibold text-[#6F6B63]">
+                Principal Advance
+              </span>
+              <span className="text-2xl font-extrabold text-[#171717] tabular-nums tracking-tight">
+                ₹{amount.toLocaleString()}
+              </span>
             </div>
+            <p className="text-[11px] text-[#969188] mb-3">Allocated liquidity disbursed directly to your account.</p>
             <input
               type="range"
               min="50000"
               max="500000"
               step="10000"
-              className="w-full h-2 bg-gray-150 rounded-lg appearance-none cursor-pointer accent-blue-600 focus:outline-none"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
+              className="w-full"
             />
-            <div className="flex justify-between text-xs text-gray-400 font-medium mt-2">
-              <span>₹50,000</span>
-              <span>₹5,00,000</span>
+            <div className="flex justify-between text-[11px] font-mono text-[#969188] mt-2">
+              <span>Min ₹50,000</span>
+              <span>Max ₹5,00,000</span>
             </div>
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-3">
-              <label className="text-gray-700 font-semibold text-sm">Tenure (Repayment Period)</label>
-              <span className="text-blue-600 font-extrabold text-xl">{tenure} Days</span>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs uppercase tracking-wider font-semibold text-[#6F6B63]">
+                Facility Tenure
+              </span>
+              <span className="text-2xl font-extrabold text-[#171717] tabular-nums tracking-tight">
+                {tenure} <span className="text-sm font-medium text-[#6F6B63]">Days</span>
+              </span>
             </div>
+            <p className="text-[11px] text-[#969188] mb-3">Structured settlement period with zero early-closure penalties.</p>
             <input
               type="range"
               min="30"
               max="365"
               step="1"
-              className="w-full h-2 bg-gray-150 rounded-lg appearance-none cursor-pointer accent-blue-600 focus:outline-none"
               value={tenure}
               onChange={(e) => setTenure(Number(e.target.value))}
+              className="w-full"
             />
-            <div className="flex justify-between text-xs text-gray-400 font-medium mt-2">
-              <span>30 Days</span>
-              <span>365 Days</span>
+            <div className="flex justify-between text-[11px] font-mono text-[#969188] mt-2">
+              <span>30 Days (1 Mo)</span>
+              <span>365 Days (12 Mos)</span>
             </div>
           </div>
 
-          {/* Jargon Glossary */}
-          <div className="pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex gap-2">
-              <Info className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-              <div>
-                <h5 className="font-bold text-xs text-gray-800">Principal</h5>
-                <p className="text-[11px] text-gray-500 leading-normal mt-0.5">The raw amount you borrow from us before interest is added.</p>
-              </div>
+          {/* Institutional Lending Disclosures */}
+          <div className="pt-6 border-t border-[#EEEBE4] grid grid-cols-2 gap-4 text-left">
+            <div className="space-y-0.5">
+              <span className="text-[11px] font-mono uppercase text-[#6F6B63]">Rate Model</span>
+              <div className="text-xs font-semibold text-[#171717]">12.00% Simple Interest p.a.</div>
+              <p className="text-[10px] text-[#969188]">Zero compounding fees or variable rate spread.</p>
             </div>
-            <div className="flex gap-2">
-              <Info className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-              <div>
-                <h5 className="font-bold text-xs text-gray-800">Tenure</h5>
-                <p className="text-[11px] text-gray-500 leading-normal mt-0.5">The duration in days allocated for settling your outstanding loan balance.</p>
+            <div className="space-y-0.5">
+              <span className="text-[11px] font-mono uppercase text-[#6F6B63]">Daily Cost</span>
+              <div className="text-xs font-semibold text-[#171717] tabular-nums">
+                ₹{dailyCost.toFixed(2)} / day
               </div>
-            </div>
-            <div className="flex gap-2">
-              <Info className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-              <div>
-                <h5 className="font-bold text-xs text-gray-800">Interest (Simple)</h5>
-                <p className="text-[11px] text-gray-500 leading-normal mt-0.5">A flat 12% annual rate applied only on the principal amount, without compounding.</p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Info className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-              <div>
-                <h5 className="font-bold text-xs text-gray-800">NBFC Partner</h5>
-                <p className="text-[11px] text-gray-500 leading-normal mt-0.5">Meghdoot Mercantile Pvt Ltd acts as our regulatory lending partner.</p>
-              </div>
+              <p className="text-[10px] text-[#969188]">Calculated only for days principal remains active.</p>
             </div>
           </div>
         </div>
 
-        {/* Visual Chart Area (5 cols) */}
-        <div className="lg:col-span-5 bg-gray-50 rounded-3xl p-6 flex flex-col items-center justify-center border border-gray-100">
-          <div className="relative w-44 h-44 flex items-center justify-center">
-            {/* SVG Donut */}
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 150 150">
-              {/* Underlay Circle (Principal representation, blue-500) */}
-              <circle
-                cx="75"
-                cy="75"
-                r={radius}
-                fill="transparent"
-                stroke="#2563eb"
-                strokeWidth="16"
-              />
-              {/* Overlay Arc (Interest representation, amber-500) */}
-              <circle
-                cx="75"
-                cy="75"
-                r={radius}
-                fill="transparent"
-                stroke="#f59e0b"
-                strokeWidth="16"
-                strokeDasharray={circumference}
-                strokeDashoffset={interestOffset}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute text-center">
-              <p className="text-gray-400 text-xs font-semibold uppercase">Total Due</p>
-              <p className="text-gray-900 font-extrabold text-lg mt-0.5">₹{Math.round(totalRepayment).toLocaleString()}</p>
+        {/* Calculation Summary Column (5 cols) */}
+        <div className="lg:col-span-5 bg-[#F6F4EF] rounded-xl p-6 border border-[#DDD9D0] flex flex-col justify-between space-y-6">
+          
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#DDD9D0]">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#6F6B63]">
+                Facility Statement
+              </span>
+              <span className="text-[10px] font-mono text-[#476353] bg-[#476353]/10 border border-[#476353]/20 px-2 py-0.5 rounded">
+                BRE Pre-Qualified
+              </span>
+            </div>
+
+            {/* Total Payable Dominant Metric */}
+            <div className="py-5 text-center">
+              <span className="text-[11px] uppercase tracking-wider text-[#6F6B63] font-medium block">
+                Total Repayment Obligation
+              </span>
+              <div className="text-3xl md:text-4xl font-black text-[#171717] tracking-tight mt-1 tabular-nums">
+                ₹{Math.round(totalRepayment).toLocaleString()}
+              </div>
+              <div className="text-[11px] font-mono text-[#6F6B63] mt-1">
+                Due upon maturity ({tenure} days)
+              </div>
+            </div>
+
+            {/* Visual Distribution Bar */}
+            <div className="space-y-1.5 pt-2">
+              <div className="w-full h-2 bg-[#DDD9D0] rounded-full overflow-hidden flex">
+                <div 
+                  className="bg-[#111111] h-full transition-all duration-300"
+                  style={{ width: `${principalRatio}%` }}
+                ></div>
+                <div 
+                  className="bg-[#B49A68] h-full transition-all duration-300"
+                  style={{ width: `${interestRatio}%` }}
+                ></div>
+              </div>
+              <div className="flex justify-between text-[11px] font-mono text-[#6F6B63] pt-0.5">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-sm bg-[#111111]"></span> Principal: {principalRatio.toFixed(1)}%
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-sm bg-[#B49A68]"></span> Interest: {interestRatio.toFixed(1)}%
+                </span>
+              </div>
+            </div>
+
+            {/* Detailed Line Items */}
+            <div className="mt-5 space-y-2.5 text-xs border-t border-[#DDD9D0] pt-4">
+              <div className="flex justify-between text-[#6F6B63]">
+                <span>Principal Disbursable:</span>
+                <span className="font-semibold text-[#171717] tabular-nums">₹{amount.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-[#6F6B63]">
+                <span>Interest Charge (12% p.a.):</span>
+                <span className="font-semibold text-[#B49A68] tabular-nums">₹{Math.round(interestAmount).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-[#6F6B63]">
+                <span>Origination / Platform Fee:</span>
+                <span className="font-semibold text-[#476353]">₹0 (Waived)</span>
+              </div>
             </div>
           </div>
 
-          <div className="mt-6 w-full space-y-3.5">
-            <div className="flex justify-between items-center text-sm font-semibold">
-              <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 bg-blue-600 rounded-md"></div>
-                <span className="text-gray-600">Principal</span>
-              </div>
-              <span className="text-gray-900">₹{amount.toLocaleString()}</span>
-            </div>
-            
-            <div className="flex justify-between items-center text-sm font-semibold">
-              <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 bg-amber-500 rounded-md"></div>
-                <span className="text-gray-600">Interest (12% p.a.)</span>
-              </div>
-              <span className="text-gray-950">₹{Math.round(interest).toLocaleString()}</span>
+          {/* Action CTA */}
+          <div className="pt-2">
+            <Link
+              to="/apply"
+              className="w-full py-3 bg-[#111111] hover:bg-[#222222] text-[#F6F4EF] font-semibold text-xs rounded-lg border border-[#111111] hover:border-[#B49A68] transition duration-150 flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>Lock Facility & Apply</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#B49A68]" />
+            </Link>
+            <div className="flex items-center justify-center gap-1.5 text-[10px] text-[#969188] font-mono mt-2.5">
+              <ShieldCheck className="w-3 h-3 text-[#B49A68]" /> Regulated NBFC Escrow Disbursal
             </div>
           </div>
+
         </div>
 
       </div>

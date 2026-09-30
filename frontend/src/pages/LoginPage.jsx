@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../lib/api";
+import { ShieldCheck, ArrowUpRight, Lock, KeyRound } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -27,50 +28,70 @@ export default function LoginPage() {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Check your credentials.");
+      setError(err.response?.data?.message || "Invalid authentication credentials.");
     } finally {
       setLoading(false);
     }
   };
 
+  const setDemoCredentials = (demoEmail, demoPass) => {
+    setEmail(demoEmail);
+    setPassword(demoPass);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-        <div className="text-center mb-8">
-          <Link to="/" className="flex items-center justify-center gap-2 mb-6">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center transform rotate-45">
-              <span className="text-white font-bold text-sm -rotate-45">CS</span>
+    <div className="min-h-screen flex items-center justify-center bg-[#F6F4EF] py-12 px-4 sm:px-6 lg:px-8 text-[#171717]">
+      <div className="max-w-md w-full bg-white p-8 md:p-10 rounded-xl border border-[#DDD9D0] shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-6">
+        
+        {/* Header Monogram */}
+        <div className="text-center space-y-3">
+          <Link to="/" className="inline-flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#111111] flex items-center justify-center">
+              <span className="text-[#F6F4EF] font-mono text-xs font-bold tracking-tight">CS</span>
             </div>
-            <span className="font-extrabold text-2xl text-blue-600">CreditSea</span>
+            <span className="font-bold text-lg text-[#171717] tracking-tight">CreditSea</span>
           </Link>
-          <h2 className="text-3xl font-extrabold text-gray-950">Welcome back</h2>
-          <p className="mt-2 text-sm text-gray-500 font-medium">
-            Sign in to your CreditSea portal
-          </p>
+          <div>
+            <h1 className="text-2xl font-black text-[#171717] tracking-tight">Institutional Workspace</h1>
+            <p className="text-xs text-[#6F6B63] mt-1 font-normal">
+              Enter your credentials to access client or operations desks
+            </p>
+          </div>
         </div>
 
-        <form className="space-y-6" onSubmit={handleLogin}>
-          {error && <div className="p-4 bg-red-50 border border-red-105 text-red-700 rounded-2xl text-sm font-semibold">{error}</div>}
-          
+        {error && (
+          <div className="p-3.5 bg-[#874F4F]/10 border border-[#874F4F]/30 text-[#874F4F] rounded-lg text-xs font-medium">
+            {error}
+          </div>
+        )}
+
+        {/* Login Form */}
+        <form className="space-y-4" onSubmit={handleLogin}>
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">Email Address</label>
+            <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+              Registered Email
+            </label>
             <input
               type="email"
               required
-              placeholder="e.g. borrower@lms.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              placeholder="e.g. admin@creditsea.com"
+              className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">Password</label>
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider">
+                Password
+              </label>
+            </div>
             <input
               type="password"
               required
               placeholder="••••••••"
-              className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition font-mono"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -79,20 +100,61 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-4 px-4 border border-transparent rounded-2xl shadow-lg shadow-blue-100 hover:shadow-blue-200 text-base font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition duration-150"
+            className="w-full mt-2 py-3 bg-[#111111] hover:bg-[#222222] text-[#F6F4EF] font-semibold text-xs rounded-lg border border-[#111111] hover:border-[#B49A68] transition duration-150 flex items-center justify-center gap-1.5 disabled:opacity-60 shadow-sm"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            <span>{loading ? "Authenticating..." : "Sign In to Workspace"}</span>
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#B49A68]" />
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500 font-semibold">
-            Don't have a borrower account?{" "}
-            <Link to="/auth/register" className="font-bold text-blue-600 hover:text-blue-500">
-              Sign up
-            </Link>
-          </p>
+        {/* Quick Demo Credentials Helper */}
+        <div className="pt-4 border-t border-[#EEEBE4] space-y-2">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#969188] block text-center">
+            Fast Access Credentials (1-Click Fill)
+          </span>
+          <div className="grid grid-cols-2 gap-2 text-[10px]">
+            <button
+              type="button"
+              onClick={() => setDemoCredentials("admin@creditsea.com", "Admin@1234")}
+              className="px-2.5 py-1.5 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] text-[#171717] rounded text-left font-mono"
+            >
+              <span className="font-bold text-[#B49A68] block">Admin</span>
+              admin@creditsea.com
+            </button>
+            <button
+              type="button"
+              onClick={() => setDemoCredentials("sanction@creditsea.com", "Admin@1234")}
+              className="px-2.5 py-1.5 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] text-[#171717] rounded text-left font-mono"
+            >
+              <span className="font-bold text-[#B49A68] block">Sanction</span>
+              sanction@creditsea.com
+            </button>
+            <button
+              type="button"
+              onClick={() => setDemoCredentials("disbursement@creditsea.com", "Admin@1234")}
+              className="px-2.5 py-1.5 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] text-[#171717] rounded text-left font-mono"
+            >
+              <span className="font-bold text-[#B49A68] block">Disbursement</span>
+              disbursement@creditsea.com
+            </button>
+            <button
+              type="button"
+              onClick={() => setDemoCredentials("rahul@gmail.com", "Borrower@1234")}
+              className="px-2.5 py-1.5 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] text-[#171717] rounded text-left font-mono"
+            >
+              <span className="font-bold text-[#B49A68] block">Borrower</span>
+              rahul@gmail.com
+            </button>
+          </div>
         </div>
+
+        <div className="text-center pt-2 text-xs text-[#6F6B63]">
+          New applicant without an account?{" "}
+          <Link to="/auth/register" className="font-semibold text-[#171717] hover:underline">
+            Register Client Account &rarr;
+          </Link>
+        </div>
+
       </div>
     </div>
   );

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, ShieldCheck, Check } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    subject: "General Query",
+    subject: "Facility Inquiries",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -22,164 +22,182 @@ export default function ContactPage() {
         name: "",
         email: "",
         phone: "",
-        subject: "General Query",
+        subject: "Facility Inquiries",
         message: "",
       });
-    }, 3000);
+    }, 4000);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+    <div className="min-h-screen flex flex-col bg-[#F6F4EF] text-[#171717]">
       <Header />
 
-      <main className="flex-grow pt-32 pb-20">
+      <main className="flex-grow pt-32 pb-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Contact & Support</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-              Have questions about our loan programs or need help with an active application? Reach out to our dedicated support team.
+          
+          <div className="max-w-3xl mb-12 text-left">
+            <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-bold">
+              Direct Communication
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-black text-[#171717] mt-2 tracking-tight">
+              Support & Inquiries Desk
+            </h1>
+            <p className="text-sm sm:text-base text-[#6F6B63] mt-2 leading-relaxed">
+              Direct support for facility underwriting, payment receipt matching, and institutional partner coordination.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-            {/* Contact Details */}
-            <div className="lg:col-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl">
-              <h2 className="text-2xl font-bold mb-8">Contact Information</h2>
-              
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <Phone className="w-6 h-6 text-white" />
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* Contact Details (4 cols) */}
+            <div className="lg:col-span-4 bg-[#111111] rounded-xl p-7 text-[#F6F4EF] space-y-6 border border-[#222222]">
+              <div>
+                <h2 className="text-base font-bold text-white tracking-tight">Operational Desk</h2>
+                <p className="text-xs text-[#969188] mt-0.5">Meghdoot Mercantile Partner Coordination</p>
+              </div>
+
+              <div className="space-y-4 pt-2 text-xs">
+                <div className="flex items-start gap-3">
+                  <Phone className="w-4 h-4 text-[#B49A68] shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-blue-105 text-sm">Call Us</p>
-                    <p className="font-bold text-lg">+91 1800 123 4567</p>
-                    <p className="text-xs text-blue-200">Mon-Sat, 9am - 6pm</p>
+                    <span className="text-[#969188] block text-[10px] uppercase font-mono">Toll-Free Desk</span>
+                    <span className="font-semibold text-white text-sm tabular-nums">+91 1800 123 4567</span>
+                    <span className="text-[10px] text-[#6F6B63] block">Mon–Sat, 09:30–18:00 IST</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <Mail className="w-6 h-6 text-white" />
-                  </div>
+                <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-[#B49A68] shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-blue-105 text-sm">Email Us</p>
-                    <p className="font-bold text-lg">support@creditsea.com</p>
-                    <p className="text-xs text-blue-200">Response within 24 hours</p>
+                    <span className="text-[#969188] block text-[10px] uppercase font-mono">Direct Email</span>
+                    <span className="font-semibold text-white text-sm">support@creditsea.com</span>
+                    <span className="text-[10px] text-[#6F6B63] block">24h Institutional Response Latency</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-white/10 rounded-xl">
-                    <MapPin className="w-6 h-6 text-white" />
-                  </div>
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#B49A68] shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-blue-105 text-sm">Office Address</p>
-                    <p className="leading-relaxed text-sm">
+                    <span className="text-[#969188] block text-[10px] uppercase font-mono">Registered Office</span>
+                    <span className="font-medium text-[#DDD9D0] leading-relaxed block text-xs">
                       SO-11, 3rd Floor, Magneto Offizo,<br />
-                      Magneto The Mall,<br />
+                      Magneto The Mall, Labhandi,<br />
                       Raipur, Chhattisgarh 492001
-                    </p>
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-16 pt-8 border-t border-white/10 text-center text-sm text-blue-100">
-                <p className="font-bold">INNOTECH CREDITSEA</p>
-                <p className="text-xs text-blue-200 mt-1">Lending partner: Meghdoot Mercantile Pvt Ltd</p>
+              <div className="pt-4 border-t border-[#222222] text-[10px] font-mono text-[#6F6B63] space-y-1">
+                <div>Escrow Bank: HDFC Bank Ltd</div>
+                <div>Grievance Officer: compliance@creditsea.com</div>
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="lg:col-span-2 bg-white border border-gray-150 shadow-xl rounded-3xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
-              
+            {/* Contact Form (8 cols) */}
+            <div className="lg:col-span-8 bg-white border border-[#DDD9D0] rounded-xl p-7 md:p-9 shadow-sm">
+              <h2 className="text-lg font-bold text-[#171717] mb-6 tracking-tight">Transmit Secure Inquiry</h2>
+
               {submitted ? (
-                <div className="bg-green-55 border border-green-200 text-green-700 px-6 py-8 rounded-2xl text-center">
-                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                <div className="bg-[#476353]/10 border border-[#476353]/30 text-[#476353] p-8 rounded-xl text-center space-y-2">
+                  <div className="w-10 h-10 rounded-full bg-[#476353] text-white flex items-center justify-center mx-auto">
+                    <Check className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">Message Sent!</h3>
-                  <p className="text-sm text-green-650 max-w-sm mx-auto">
-                    Thank you for reaching out. A customer support executive will contact you shortly.
+                  <h3 className="text-base font-bold text-[#171717]">Inquiry Dispatched</h3>
+                  <p className="text-xs text-[#6F6B63] max-w-sm mx-auto">
+                    Your inquiry has been logged into our support ticketing system. An underwriting officer will review your notes shortly.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1.5">Your Name</label>
+                      <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+                        Full Name
+                      </label>
                       <input
                         type="text"
                         required
-                        className="w-full px-4 py-3 border border-gray-305 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition text-sm"
+                        className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. John Doe"
+                        placeholder="e.g. Rahul Sharma"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email Address</label>
+                      <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+                        Email Address
+                      </label>
                       <input
                         type="email"
                         required
-                        className="w-full px-4 py-3 border border-gray-305 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition text-sm"
+                        className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="e.g. john@example.com"
+                        placeholder="e.g. rahul@example.com"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number</label>
+                      <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+                        Contact Phone
+                      </label>
                       <input
                         type="tel"
                         required
-                        className="w-full px-4 py-3 border border-gray-305 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition text-sm"
+                        className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="e.g. 9876543210"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1.5">Subject</label>
+                      <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+                        Category
+                      </label>
                       <select
-                        className="w-full px-4 py-3 border border-gray-305 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition bg-white text-sm"
+                        className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition"
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       >
-                        <option value="General Query">General Query</option>
-                        <option value="Application Status">Application Status</option>
-                        <option value="Disbursement Help">Disbursement Help</option>
-                        <option value="Repayment Query">Repayment Query</option>
-                        <option value="Partner Inquiry">Partner Inquiry</option>
+                        <option value="Facility Inquiries">Facility Inquiries</option>
+                        <option value="Underwriting Status">Underwriting Status</option>
+                        <option value="Disbursement Verification">Disbursement Verification</option>
+                        <option value="Repayment & UTR Clearance">Repayment & UTR Clearance</option>
+                        <option value="Regulatory / NBFC Compliance">Regulatory / NBFC Compliance</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Message</label>
+                    <label className="block text-xs font-semibold text-[#6F6B63] uppercase tracking-wider mb-1.5">
+                      Inquiry Notes
+                    </label>
                     <textarea
                       required
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-305 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition resize-none text-sm"
+                      className="w-full px-3.5 py-2.5 bg-[#F6F4EF] border border-[#DDD9D0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#B49A68] transition resize-none"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Type your message here..."
+                      placeholder="Specify your application reference or question details..."
                     ></textarea>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition shadow-lg shadow-blue-200"
-                  >
-                    Send Message <Send className="w-4 h-4" />
-                  </button>
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 bg-[#111111] hover:bg-[#222222] text-[#F6F4EF] font-semibold text-xs rounded-lg border border-[#111111] hover:border-[#B49A68] transition duration-150 flex items-center gap-1.5 shadow-sm"
+                    >
+                      <span>Transmit Message</span>
+                      <Send className="w-3.5 h-3.5 text-[#B49A68]" />
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
+
           </div>
         </div>
       </main>

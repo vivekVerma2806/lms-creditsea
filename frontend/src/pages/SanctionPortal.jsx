@@ -14,8 +14,9 @@ import {
   User, 
   Mail, 
   Calendar,
-  CheckCircle,
-  AlertTriangle
+  CheckCircle2,
+  Clock,
+  Building
 } from "lucide-react";
 
 export default function SanctionPortal() {
@@ -49,7 +50,7 @@ export default function SanctionPortal() {
   }, []);
 
   const handleApprove = async (id) => {
-    if (!confirm("Are you sure you want to approve and sanction this loan advance?")) return;
+    if (!confirm("Confirm sanction and credit approval for this applicant?")) return;
     setError("");
     setSuccess("");
     try {
@@ -58,7 +59,7 @@ export default function SanctionPortal() {
         { status: "Approved" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSuccess("Loan successfully approved and forwarded to Disbursement Desk!");
+      setSuccess("Loan successfully approved and transferred to Escrow Disbursement Desk.");
       setInspectingLoan(null);
       fetchLoans();
     } catch (err) {
@@ -77,7 +78,7 @@ export default function SanctionPortal() {
         { status: "Rejected", rejectionReason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSuccess("Loan successfully marked as Rejected.");
+      setSuccess("Loan marked as Adverse/Rejected with audit reason logged.");
       setRejectingLoanId(null);
       setInspectingLoan(null);
       setRejectionReason("");
@@ -108,276 +109,278 @@ export default function SanctionPortal() {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Sanction Audit Desk</h1>
-        <p className="text-gray-500 text-sm mt-1">Audit applicant creditworthiness, verify KYC documents, and approve credit lines</p>
+    <div className="space-y-8 text-[#171717]">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-6 border-b border-[#DDD9D0]">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B49A68]"></span>
+            <span className="text-[11px] font-mono tracking-widest uppercase text-[#6F6B63]">
+              Underwriting Desk
+            </span>
+          </div>
+          <h1 className="text-3xl font-serif font-medium tracking-tight text-[#171717]">
+            Sanction & Risk Audit Queue
+          </h1>
+          <p className="text-sm text-[#6F6B63] font-light mt-1">
+            Evaluate applicant credit eligibility, review uploaded KYC credentials, and issue sanction decisions.
+          </p>
+        </div>
+
+        <span className="text-xs font-mono text-[#6F6B63] bg-white border border-[#DDD9D0] px-3 py-1.5 rounded">
+          Pending Audit: <strong className="text-[#A17E43] font-mono">{filteredLoans.length}</strong>
+        </span>
       </div>
 
       {success && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs font-bold flex items-center justify-between">
+        <div className="p-4 bg-[#EFEFE9] border border-[#CCD8D0] text-[#476353] rounded text-xs font-medium flex items-center justify-between">
           <span>{success}</span>
-          <button onClick={() => setSuccess("")} className="text-emerald-900 font-extrabold">✕</button>
+          <button onClick={() => setSuccess("")} className="text-[#476353] font-bold">✕</button>
         </div>
       )}
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-xs font-bold flex items-center justify-between">
+        <div className="p-4 bg-[#FBEAEA] border border-[#E8C2C2] text-[#874F4F] rounded text-xs font-medium flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError("")} className="text-red-900 font-extrabold">✕</button>
+          <button onClick={() => setError("")} className="text-[#874F4F] font-bold">✕</button>
         </div>
       )}
 
       {/* Control Bar: Search & Filter */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-150 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white rounded-lg p-4 border border-[#DDD9D0] flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#969188] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by PAN, applicant name, or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+            className="w-full pl-10 pr-4 py-2 bg-[#F6F4EF] border border-[#DDD9D0] rounded text-xs font-mono focus:outline-none focus:border-[#111111]"
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
-            <Filter className="w-4 h-4" />
-            <span>Employment:</span>
-          </div>
-          <select
-            value={employmentFilter}
-            onChange={(e) => setEmploymentFilter(e.target.value)}
-            className="px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="ALL">All Profiles ({loans.length})</option>
-            <option value="Salaried">Salaried</option>
-            <option value="Self-Employed">Self-Employed</option>
-          </select>
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <span className="text-xs font-mono text-[#6F6B63]">Employment:</span>
+          {["ALL", "Salaried", "Self-Employed"].map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setEmploymentFilter(mode)}
+              className={`px-3 py-1.5 rounded text-xs font-mono transition ${
+                employmentFilter === mode
+                  ? "bg-[#111111] text-white"
+                  : "bg-[#F6F4EF] border border-[#DDD9D0] text-[#6F6B63] hover:text-[#171717]"
+              }`}
+            >
+              {mode}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Sanction Audit Queue Table */}
-      <div className="bg-white rounded-3xl border border-gray-150 shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-blue-600" />
-            <h2 className="font-extrabold text-base text-gray-900">Pending Sanction Audit Queue</h2>
-          </div>
-          <span className="text-xs font-bold text-gray-500 bg-gray-50 px-3 py-1 rounded-xl border border-gray-200">
-            Showing {filteredLoans.length} of {loans.length}
-          </span>
-        </div>
-
+      {/* Main Table */}
+      <div className="bg-white border border-[#DDD9D0] rounded-lg overflow-hidden">
         {loading ? (
           <div className="text-center py-20">
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-gray-500 mt-4 text-xs font-bold">Loading audit queue...</p>
+            <div className="w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="text-xs font-mono text-[#6F6B63] mt-3">Accessing Sanction Queue...</p>
+          </div>
+        ) : filteredLoans.length === 0 ? (
+          <div className="py-20 text-center text-xs text-[#6F6B63] font-light bg-[#F6F4EF]">
+            No loan applications currently awaiting underwriting review.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-150 text-left">
-              <thead className="bg-gray-50/50">
+            <table className="min-w-full text-xs text-left divide-y divide-[#DDD9D0]">
+              <thead className="bg-[#F6F4EF] font-mono text-[11px] uppercase tracking-wider text-[#6F6B63]">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Applicant & Contact</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">PAN & Age</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Salary</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Requested Advance</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Salary Slip</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3">Applicant & PAN</th>
+                  <th className="px-4 py-3">Monthly Net Income</th>
+                  <th className="px-4 py-3">Requested Facility</th>
+                  <th className="px-4 py-3">Tenure</th>
+                  <th className="px-4 py-3">KYC Dossier</th>
+                  <th className="px-4 py-3">Applied Date</th>
+                  <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-150 bg-white text-sm">
+              <tbody className="divide-y divide-[#DDD9D0] text-[#171717]">
                 {filteredLoans.map((loan) => {
-                  const borrower = loan.borrowerId;
-                  const user = borrower?.userId;
-                  const age = calculateAge(borrower?.dob);
-                  const isAgeCompliant = age >= 23 && age <= 50;
+                  const b = loan.borrowerId;
+                  const u = b?.userId;
+                  const age = calculateAge(b?.dob);
 
                   return (
-                    <tr key={loan._id} className="hover:bg-blue-50/20 transition">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-bold text-gray-900">{user?.name || "Applicant"}</div>
-                        <div className="text-xs text-gray-400 font-semibold flex items-center gap-1 mt-0.5">
-                          <Mail className="w-3 h-3 text-gray-400" />
-                          {user?.email || "No email"}
+                    <tr key={loan._id} className="hover:bg-[#F6F4EF] transition">
+                      <td className="px-4 py-3.5">
+                        <div className="font-medium text-[#171717]">{u?.name || "N/A"}</div>
+                        <div className="text-[11px] font-mono text-[#6F6B63] mt-0.5">
+                          PAN: {b?.pan || "PENDING"} {age ? `· Age: ${age}y` : ""}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-mono font-bold text-gray-900 uppercase tracking-wider">{borrower?.pan || "N/A"}</div>
-                        <div className="text-[11px] text-gray-500 font-semibold mt-0.5 flex items-center gap-1">
-                          <span>Age: {age ? `${age} yrs` : "N/A"}</span>
-                          {age && (
-                            isAgeCompliant ? (
-                              <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">BRE Pass</span>
-                            ) : (
-                              <span className="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">BRE Flag</span>
-                            )
-                          )}
-                        </div>
+                      <td className="px-4 py-3.5">
+                        <div className="font-semibold tabular-nums">₹{(b?.monthlySalary || 0).toLocaleString()}</div>
+                        <div className="text-[11px] text-[#6F6B63] capitalize">{b?.employmentMode || "Salaried"}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-bold text-gray-900">₹{(borrower?.monthlySalary || 0).toLocaleString()}</div>
-                        <div className="text-[11px] text-gray-400 font-semibold mt-0.5">
-                          {borrower?.employmentMode || "Salaried"}
-                        </div>
+                      <td className="px-4 py-3.5 font-semibold tabular-nums text-[#171717]">
+                        ₹{loan.amount.toLocaleString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-extrabold text-blue-650">₹{loan.amount.toLocaleString()}</div>
-                        <div className="text-[11px] text-gray-450 mt-0.5 font-bold">
-                          Tenure: {loan.tenure} Days
-                        </div>
+                      <td className="px-4 py-3.5 font-mono text-[#6F6B63]">
+                        {loan.tenure} Days
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {borrower?.salarySlipUrl ? (
-                          <a
-                            href={`${API_URL}${borrower.salarySlipUrl}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-extrabold transition"
-                          >
-                            <FileText className="w-3.5 h-3.5" /> View Slip <Download className="w-3 h-3" />
-                          </a>
-                        ) : (
-                          <span className="text-gray-400 text-xs font-semibold flex items-center gap-1">
-                            <AlertCircle className="w-3.5 h-3.5 text-gray-350" /> No Slip Uploaded
-                          </span>
-                        )}
+                      <td className="px-4 py-3.5">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#EFEFE9] text-[#476353] border border-[#CCD8D0]">
+                          <ShieldCheck className="w-3 h-3" /> Complete
+                        </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
+                      <td className="px-4 py-3.5 text-[#6F6B63]">
+                        {new Date(loan.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-4 py-3.5 text-right">
+                        <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => setInspectingLoan(loan)}
-                            className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition"
-                            title="Detailed Audit View"
+                            className="px-2.5 py-1.5 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] text-[#171717] rounded text-xs font-mono uppercase tracking-wider transition flex items-center gap-1"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3.5 h-3.5 text-[#B49A68]" /> Inspect
                           </button>
                           <button
                             onClick={() => handleApprove(loan._id)}
-                            className="p-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl transition"
-                            title="Sanction & Approve"
+                            className="px-2.5 py-1.5 bg-[#111111] hover:bg-[#222222] text-white rounded text-xs font-mono uppercase tracking-wider transition flex items-center gap-1"
                           >
-                            <Check className="w-4 h-4" />
+                            <Check className="w-3.5 h-3.5 text-[#B49A68]" /> Sanction
                           </button>
                           <button
-                            onClick={() => setRejectingLoanId(loan._id)}
-                            className="p-2 bg-red-50 hover:bg-red-100 text-red-650 border border-red-200 rounded-xl transition"
-                            title="Reject Advance"
+                            onClick={() => {
+                              setRejectingLoanId(loan._id);
+                              setRejectionReason("");
+                            }}
+                            className="px-2 py-1.5 border border-[#DDD9D0] text-[#874F4F] hover:bg-[#FBEAEA] rounded text-xs font-mono uppercase tracking-wider transition"
                           >
-                            <X className="w-4 h-4" />
+                            Decline
                           </button>
                         </div>
                       </td>
                     </tr>
                   );
                 })}
-                {filteredLoans.length === 0 && (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-gray-500 font-medium">
-                      No matching advances requiring sanction review.
-                    </td>
-                  </tr>
-                )}
               </tbody>
             </table>
           </div>
         )}
       </div>
 
-      {/* Detailed Loan Audit Drawer Modal */}
+      {/* Inspect Application Dossier Modal */}
       {inspectingLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white max-w-xl w-full rounded-3xl p-6 md:p-8 border border-gray-150 shadow-2xl relative space-y-6 animate-scaleUp max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-start border-b border-gray-100 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white max-w-2xl w-full rounded-lg p-6 md:p-8 border border-[#DDD9D0] shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start border-b border-[#DDD9D0] pb-4">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
-                  Underwriting Audit
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#B49A68] bg-[#FBF6ED] px-2 py-0.5 rounded border border-[#EBDCBF]">
+                  Underwriting Assessment
                 </span>
-                <h3 className="text-xl font-bold text-gray-900 mt-2">
-                  {inspectingLoan.borrowerId?.userId?.name || "Applicant Profile"}
+                <h3 className="text-xl font-serif font-medium text-[#171717] mt-2">
+                  Dossier: {inspectingLoan.borrowerId?.userId?.name || "Applicant"}
                 </h3>
-                <p className="text-xs text-gray-400 font-medium">{inspectingLoan.borrowerId?.userId?.email}</p>
+                <p className="text-xs text-[#6F6B63]">
+                  Facility Request: ₹{inspectingLoan.amount.toLocaleString()} for {inspectingLoan.tenure} Days
+                </p>
               </div>
               <button
                 onClick={() => setInspectingLoan(null)}
-                className="p-2 text-gray-400 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                className="p-1.5 text-[#6F6B63] hover:text-[#171717]"
               >
                 ✕
               </button>
             </div>
 
-            {/* Loan Details Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                <span className="text-xs text-gray-400 font-bold uppercase">Requested Amount</span>
-                <div className="text-2xl font-black text-blue-600 mt-1">₹{inspectingLoan.amount.toLocaleString()}</div>
-                <div className="text-[11px] text-gray-500 font-semibold mt-0.5">Tenure: {inspectingLoan.tenure} days</div>
+            {/* Assessment Details */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">PAN Reference</div>
+                <div className="font-mono font-medium text-[#171717] mt-0.5">{inspectingLoan.borrowerId?.pan || "N/A"}</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                <span className="text-xs text-gray-400 font-bold uppercase">Total Repayment Due</span>
-                <div className="text-2xl font-black text-gray-800 mt-1">₹{Math.round(inspectingLoan.totalRepayment).toLocaleString()}</div>
-                <div className="text-[11px] text-gray-500 font-semibold mt-0.5">12% APR Simple Interest</div>
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">Applicant Age</div>
+                <div className="font-mono font-medium text-[#171717] mt-0.5">{calculateAge(inspectingLoan.borrowerId?.dob) || "N/A"} Years</div>
+              </div>
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">Monthly Salary</div>
+                <div className="font-semibold text-[#171717] mt-0.5 tabular-nums">₹{(inspectingLoan.borrowerId?.monthlySalary || 0).toLocaleString()}</div>
+              </div>
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">Employer / Business</div>
+                <div className="font-medium text-[#171717] mt-0.5">{inspectingLoan.borrowerId?.employerName || "Private Firm"}</div>
+              </div>
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">Employment Mode</div>
+                <div className="font-medium text-[#171717] mt-0.5">{inspectingLoan.borrowerId?.employmentMode || "Salaried"}</div>
+              </div>
+              <div className="p-3 bg-[#F6F4EF] rounded border border-[#DDD9D0]">
+                <div className="text-[10px] font-mono uppercase text-[#6F6B63]">Total Repayable</div>
+                <div className="font-semibold text-[#171717] mt-0.5 tabular-nums">₹{Math.round(inspectingLoan.totalRepayment).toLocaleString()}</div>
               </div>
             </div>
 
-            {/* KYC & Underwriting Summary */}
+            {/* Document Links */}
             <div className="space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-gray-400">KYC & Compliance Verification</h4>
-              
-              <div className="bg-white border border-gray-150 rounded-2xl p-4 divide-y divide-gray-100 text-xs font-semibold">
-                <div className="py-2 flex justify-between">
-                  <span className="text-gray-500">Permanent Account Number (PAN):</span>
-                  <span className="font-mono font-bold uppercase text-gray-900">{inspectingLoan.borrowerId?.pan}</span>
-                </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-gray-500">Date of Birth & Age:</span>
-                  <span className="font-bold text-gray-900">
-                    {new Date(inspectingLoan.borrowerId?.dob).toLocaleDateString()} ({calculateAge(inspectingLoan.borrowerId?.dob)} years)
-                  </span>
-                </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-gray-500">Verified Monthly Salary:</span>
-                  <span className="font-bold text-emerald-600">₹{(inspectingLoan.borrowerId?.monthlySalary || 0).toLocaleString()}</span>
-                </div>
-                <div className="py-2 flex justify-between">
-                  <span className="text-gray-500">Employment Mode:</span>
-                  <span className="font-bold text-gray-900">{inspectingLoan.borrowerId?.employmentMode}</span>
-                </div>
-                <div className="py-2 flex justify-between items-center">
-                  <span className="text-gray-500">Salary Slip Document:</span>
-                  {inspectingLoan.borrowerId?.salarySlipUrl ? (
-                    <a
-                      href={`${API_URL}${inspectingLoan.borrowerId.salarySlipUrl}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-bold text-blue-600 hover:underline flex items-center gap-1"
-                    >
-                      <Download className="w-3.5 h-3.5" /> Download Attached Document
-                    </a>
-                  ) : (
-                    <span className="text-red-500 font-bold">No Document Provided</span>
-                  )}
-                </div>
+              <h4 className="text-xs font-mono uppercase tracking-wider text-[#6F6B63]">Uploaded Financial Artifacts</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {inspectingLoan.borrowerId?.salarySlipUrl ? (
+                  <a
+                    href={inspectingLoan.borrowerId.salarySlipUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-3 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] rounded text-xs flex items-center justify-between transition"
+                  >
+                    <span className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-[#B49A68]" />
+                      Salary Slip / Bank Proof
+                    </span>
+                    <Download className="w-3.5 h-3.5 text-[#6F6B63]" />
+                  </a>
+                ) : (
+                  <div className="p-3 bg-[#F6F4EF] border border-[#DDD9D0] rounded text-xs text-[#969188] flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#969188]" />
+                    Salary Slip Not Attached
+                  </div>
+                )}
+
+                {inspectingLoan.borrowerId?.kycDocUrl ? (
+                  <a
+                    href={inspectingLoan.borrowerId.kycDocUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-3 bg-[#F6F4EF] hover:bg-[#EEEBE4] border border-[#DDD9D0] rounded text-xs flex items-center justify-between transition"
+                  >
+                    <span className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-[#476353]" />
+                      PAN / Identity Document
+                    </span>
+                    <Download className="w-3.5 h-3.5 text-[#6F6B63]" />
+                  </a>
+                ) : (
+                  <div className="p-3 bg-[#F6F4EF] border border-[#DDD9D0] rounded text-xs text-[#969188] flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#969188]" />
+                    Direct KYC Document
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Action Buttons in Drawer */}
-            <div className="flex gap-3 pt-4 border-t border-gray-100">
+            {/* Actions */}
+            <div className="flex justify-end gap-3 pt-3 border-t border-[#DDD9D0]">
               <button
-                type="button"
                 onClick={() => {
                   setRejectingLoanId(inspectingLoan._id);
+                  setRejectionReason("");
                 }}
-                className="flex-1 py-3 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-2xl border border-red-200 transition"
+                className="px-4 py-2 border border-[#DDD9D0] text-[#874F4F] hover:bg-[#FBEAEA] rounded text-xs font-mono uppercase tracking-wider transition"
               >
-                Reject Application
+                Decline Application
               </button>
               <button
-                type="button"
                 onClick={() => handleApprove(inspectingLoan._id)}
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-emerald-200 transition"
+                className="px-5 py-2 bg-[#111111] hover:bg-[#222222] text-white rounded text-xs font-mono uppercase tracking-wider transition flex items-center gap-1.5"
               >
+                <Check className="w-3.5 h-3.5 text-[#B49A68]" />
                 Approve & Sanction
               </button>
             </div>
@@ -387,41 +390,37 @@ export default function SanctionPortal() {
 
       {/* Reject Modal */}
       {rejectingLoanId && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <form onSubmit={handleRejectSubmit} className="bg-white max-w-md w-full rounded-3xl p-6 border border-gray-150 shadow-2xl relative space-y-4 animate-scaleUp">
-            <h3 className="text-lg font-bold text-gray-950 flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-600" />
-              Specify Rejection Reason
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <form onSubmit={handleRejectSubmit} className="bg-white max-w-md w-full rounded-lg p-6 border border-[#DDD9D0] shadow-2xl space-y-4">
+            <h3 className="text-base font-serif font-medium text-[#874F4F]">
+              Record Adverse Risk Underwriting Assessment
             </h3>
-            
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">Audit Rejection Details</label>
-              <textarea
-                required
-                rows={4}
-                placeholder="e.g. Inconsistent salary documentation or unverified PAN card details..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none"
-                value={rejectionReason}
-                onChange={(e) => setRejectionReason(e.target.value)}
-              ></textarea>
-            </div>
+            <p className="text-xs text-[#6F6B63] font-light">
+              Specify the statutory reason for declining this credit advance. This will be officially logged in the client audit trail.
+            </p>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <textarea
+              required
+              rows={3}
+              placeholder="e.g. Salary below regulatory threshold or ambiguous KYC proof"
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+              className="w-full p-3 border border-[#DDD9D0] rounded text-xs focus:outline-none focus:border-[#111111]"
+            />
+
+            <div className="flex justify-end gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setRejectingLoanId(null);
-                  setRejectionReason("");
-                }}
-                className="px-5 py-2.5 bg-gray-100 text-gray-700 text-xs font-bold rounded-xl hover:bg-gray-200 transition"
+                onClick={() => setRejectingLoanId(null)}
+                className="px-4 py-2 border border-[#DDD9D0] text-[#6F6B63] rounded text-xs font-mono uppercase"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-red-600 text-white text-xs font-bold rounded-xl hover:bg-red-700 transition"
+                className="px-4 py-2 bg-[#874F4F] hover:bg-[#723E3E] text-white rounded text-xs font-mono uppercase tracking-wider"
               >
-                Confirm Reject
+                Confirm Decline
               </button>
             </div>
           </form>

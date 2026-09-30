@@ -5,12 +5,13 @@ import {
   Send, 
   Calendar, 
   ShieldCheck, 
-  CheckCircle, 
+  CheckCircle2, 
   Search, 
   Mail, 
   User, 
   Wallet,
-  AlertCircle
+  AlertCircle,
+  Building
 } from "lucide-react";
 
 export default function DisbursementPortal() {
@@ -52,7 +53,7 @@ export default function DisbursementPortal() {
       await axios.patch(`${API_URL}/api/dashboard/disbursement/loans/${selectedDisburseLoan._id}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setSuccess(`Funds of ₹${selectedDisburseLoan.amount.toLocaleString()} successfully released to ${selectedDisburseLoan.borrowerId?.userId?.name || "the borrower"}!`);
+      setSuccess(`Capital remittance of ₹${selectedDisburseLoan.amount.toLocaleString()} successfully released to ${selectedDisburseLoan.borrowerId?.userId?.name || "the borrower"}.`);
       setSelectedDisburseLoan(null);
       fetchLoans();
     } catch (err) {
@@ -73,161 +74,173 @@ export default function DisbursementPortal() {
   }, [loans, searchQuery]);
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Disbursement Desk</h1>
-        <p className="text-gray-500 text-sm mt-1">Review sanctioned loans, verify escrow payout parameters, and release capital</p>
+    <div className="space-y-8 text-[#171717]">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-6 border-b border-[#DDD9D0]">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B49A68]"></span>
+            <span className="text-[11px] font-mono tracking-widest uppercase text-[#6F6B63]">
+              Escrow Operations
+            </span>
+          </div>
+          <h1 className="text-3xl font-serif font-medium tracking-tight text-[#171717]">
+            Capital Disbursement Desk
+          </h1>
+          <p className="text-sm text-[#6F6B63] font-light mt-1">
+            Authorize scheduled RTGS/NEFT transfers from partner NBFC escrow accounts to verified borrower mandates.
+          </p>
+        </div>
+
+        <span className="text-xs font-mono text-[#6F6B63] bg-white border border-[#DDD9D0] px-3 py-1.5 rounded">
+          Sanctioned Pending Payout: <strong className="text-[#171717] font-mono">{filteredLoans.length}</strong>
+        </span>
       </div>
 
       {success && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs font-bold flex items-center justify-between">
+        <div className="p-4 bg-[#EFEFE9] border border-[#CCD8D0] text-[#476353] rounded text-xs font-medium flex items-center justify-between">
           <span>{success}</span>
-          <button onClick={() => setSuccess("")} className="text-emerald-900 font-extrabold">✕</button>
+          <button onClick={() => setSuccess("")} className="text-[#476353] font-bold">✕</button>
         </div>
       )}
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-xs font-bold flex items-center justify-between">
+        <div className="p-4 bg-[#FBEAEA] border border-[#E8C2C2] text-[#874F4F] rounded text-xs font-medium flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError("")} className="text-red-900 font-extrabold">✕</button>
+          <button onClick={() => setError("")} className="text-[#874F4F] font-bold">✕</button>
         </div>
       )}
 
       {/* Search Bar */}
-      <div className="bg-white rounded-3xl p-5 border border-gray-150 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white rounded-lg p-4 border border-[#DDD9D0] flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#969188] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search by PAN, borrower name, or email..."
+            placeholder="Search by PAN, applicant name, or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
+            className="w-full pl-10 pr-4 py-2 bg-[#F6F4EF] border border-[#DDD9D0] rounded text-xs font-mono focus:outline-none focus:border-[#111111]"
           />
         </div>
-        <div className="text-xs font-bold text-gray-500">
-          Awaiting Payout: <strong className="text-indigo-600">{filteredLoans.length} Loans</strong>
+
+        <div className="text-xs font-mono text-[#6F6B63] flex items-center gap-2">
+          <Building className="w-3.5 h-3.5 text-[#B49A68]" />
+          <span>Settlement Partner: Meghdoot Mercantile Escrow</span>
         </div>
       </div>
 
-      {/* Disbursement Queue Table */}
-      <div className="bg-white rounded-3xl border border-gray-150 shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-blue-600" />
-            <h2 className="font-extrabold text-base text-gray-900">Approved Loan Disbursement Queue</h2>
-          </div>
-          <span className="text-xs font-bold text-gray-500 bg-gray-50 px-3 py-1 rounded-xl border border-gray-200">
-            Total Capital in Queue: ₹{loans.reduce((acc, l) => acc + (l.amount || 0), 0).toLocaleString()}
-          </span>
-        </div>
-
+      {/* Main Table */}
+      <div className="bg-white border border-[#DDD9D0] rounded-lg overflow-hidden">
         {loading ? (
           <div className="text-center py-20">
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="text-gray-500 mt-4 text-xs font-bold">Loading disbursement queue...</p>
+            <div className="w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="text-xs font-mono text-[#6F6B63] mt-3">Accessing Disbursement Queue...</p>
+          </div>
+        ) : filteredLoans.length === 0 ? (
+          <div className="py-20 text-center text-xs text-[#6F6B63] font-light bg-[#F6F4EF]">
+            All sanctioned credit advances have been disbursed to borrower escrow accounts.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-150 text-left">
-              <thead className="bg-gray-50/50">
+            <table className="min-w-full text-xs text-left divide-y divide-[#DDD9D0]">
+              <thead className="bg-[#F6F4EF] font-mono text-[11px] uppercase tracking-wider text-[#6F6B63]">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Borrower Details</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">PAN Account</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Sanctioned Amount</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Sanctioned Date</th>
-                  <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3">Facility Ref</th>
+                  <th className="px-4 py-3">Borrower & PAN</th>
+                  <th className="px-4 py-3">Sanctioned Capital</th>
+                  <th className="px-4 py-3">Term</th>
+                  <th className="px-4 py-3">Underwriting Status</th>
+                  <th className="px-4 py-3">Sanctioned Date</th>
+                  <th className="px-4 py-3 text-right">Escrow Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-150 bg-white text-sm">
+              <tbody className="divide-y divide-[#DDD9D0] text-[#171717]">
                 {filteredLoans.map((loan) => {
-                  const borrower = loan.borrowerId;
-                  const user = borrower?.userId;
+                  const b = loan.borrowerId;
+                  const u = b?.userId;
 
                   return (
-                    <tr key={loan._id} className="hover:bg-indigo-50/20 transition">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-bold text-gray-900">{user?.name || "Borrower"}</div>
-                        <div className="text-xs text-gray-400 font-semibold flex items-center gap-1 mt-0.5">
-                          <Mail className="w-3 h-3 text-gray-400" />
-                          {user?.email || "No email"}
+                    <tr key={loan._id} className="hover:bg-[#F6F4EF] transition">
+                      <td className="px-4 py-3.5 font-mono text-[#6F6B63]">
+                        #{loan._id.slice(-6).toUpperCase()}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="font-medium text-[#171717]">{u?.name || "N/A"}</div>
+                        <div className="text-[11px] font-mono text-[#6F6B63] mt-0.5">
+                          PAN: {b?.pan || "PENDING"} · {u?.email || ""}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap font-mono font-bold text-gray-900 uppercase">
-                        {borrower?.pan || "N/A"}
+                      <td className="px-4 py-3.5 font-semibold text-sm tabular-nums text-[#171717]">
+                        ₹{loan.amount.toLocaleString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-extrabold text-indigo-650">₹{loan.amount.toLocaleString()}</div>
-                        <div className="text-[11px] text-gray-400 font-semibold mt-0.5">
-                          Tenure: {loan.tenure} Days · Repayable: ₹{Math.round(loan.totalRepayment).toLocaleString()}
-                        </div>
+                      <td className="px-4 py-3.5 font-mono text-[#6F6B63]">
+                        {loan.tenure} Days
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-500 font-semibold text-xs">
-                        <Calendar className="w-4 h-4 text-gray-400 inline mr-1" />
+                      <td className="px-4 py-3.5">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#F5F2EB] text-[#111111] border border-[#B49A68]">
+                          <CheckCircle2 className="w-3 h-3 text-[#B49A68]" /> Sanctioned
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 text-[#6F6B63]">
                         {new Date(loan.updatedAt || loan.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-3.5 text-right">
                         <button
                           onClick={() => setSelectedDisburseLoan(loan)}
-                          className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-extrabold transition shadow-sm"
+                          className="px-3.5 py-1.5 bg-[#111111] hover:bg-[#222222] text-white rounded text-xs font-mono uppercase tracking-wider transition inline-flex items-center gap-1.5"
                         >
-                          <Send className="w-3.5 h-3.5" /> Release Funds
+                          <Send className="w-3.5 h-3.5 text-[#B49A68]" /> Release Funds
                         </button>
                       </td>
                     </tr>
                   );
                 })}
-                {filteredLoans.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500 font-medium">
-                      No approved advances ready for disbursement.
-                    </td>
-                  </tr>
-                )}
               </tbody>
             </table>
           </div>
         )}
       </div>
 
-      {/* Confirmation Modal */}
+      {/* Disbursement Confirmation Dialog */}
       {selectedDisburseLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white max-w-md w-full rounded-3xl p-6 md:p-8 border border-gray-150 shadow-2xl relative space-y-5 animate-scaleUp">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
-              <Wallet className="w-6 h-6" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white max-w-md w-full rounded-lg p-6 md:p-8 border border-[#DDD9D0] shadow-2xl relative space-y-5 animate-scaleUp">
+            <div className="flex items-center gap-3 border-b border-[#DDD9D0] pb-4">
+              <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#111111]">
+                <Send className="w-5 h-5 text-[#B49A68]" />
+              </div>
+              <div>
+                <h3 className="text-base font-serif font-medium text-[#171717]">Authorize Escrow Transfer</h3>
+                <p className="text-xs text-[#6F6B63]">RTGS / Direct Bank Mandate Dispatch</p>
+              </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-gray-900">Authorize Capital Release</h3>
-              <p className="text-xs text-gray-400 font-medium mt-1">
-                Confirm fund disbursement to the borrower's registered bank account.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-2xl p-4 border border-gray-150 text-xs font-semibold space-y-2">
+            <div className="bg-[#F6F4EF] rounded p-4 border border-[#DDD9D0] space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-gray-500">Applicant:</span>
-                <span className="font-bold text-gray-900">{selectedDisburseLoan.borrowerId?.userId?.name}</span>
+                <span className="text-[#6F6B63]">Beneficiary:</span>
+                <span className="font-medium text-[#171717]">{selectedDisburseLoan.borrowerId?.userId?.name || "Borrower"}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">PAN Account:</span>
-                <span className="font-mono font-bold text-gray-900">{selectedDisburseLoan.borrowerId?.pan}</span>
+                <span className="text-[#6F6B63]">Tax PAN Reference:</span>
+                <span className="font-mono text-[#171717]">{selectedDisburseLoan.borrowerId?.pan || "N/A"}</span>
               </div>
-              <div className="flex justify-between border-t border-gray-200 pt-2">
-                <span className="text-gray-500 font-bold">Disbursement Amount:</span>
-                <span className="text-base font-black text-indigo-600">₹{selectedDisburseLoan.amount.toLocaleString()}</span>
+              <div className="flex justify-between border-t border-[#DDD9D0] pt-2">
+                <span className="text-[#171717] font-semibold">Net Payout Amount:</span>
+                <span className="font-mono font-bold text-sm text-[#476353] tabular-nums">
+                  ₹{selectedDisburseLoan.amount.toLocaleString()}
+                </span>
               </div>
             </div>
 
-            <div className="bg-blue-50 text-blue-800 p-3.5 rounded-2xl text-xs font-medium leading-relaxed">
-              Once authorized, the funds will be wired via the Meghdoot Mercantile Escrow partner and the loan will become active immediately.
-            </div>
+            <p className="text-[11px] text-[#6F6B63] leading-relaxed font-light">
+              By confirming, you certify that KYC criteria have been strictly satisfied. Funds will be routed via the Meghdoot Mercantile institutional pooling escrow node.
+            </p>
 
-            <div className="flex justify-end gap-2 pt-2 text-xs">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => setSelectedDisburseLoan(null)}
-                className="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition"
+                className="px-4 py-2 border border-[#DDD9D0] text-[#6F6B63] rounded text-xs font-mono uppercase tracking-wider"
                 disabled={processing}
               >
                 Cancel
@@ -235,10 +248,10 @@ export default function DisbursementPortal() {
               <button
                 type="button"
                 onClick={handleDisburseConfirm}
-                className="px-5 py-2.5 bg-indigo-600 text-white font-extrabold rounded-xl hover:bg-indigo-700 transition shadow-md shadow-indigo-200"
+                className="px-5 py-2 bg-[#111111] hover:bg-[#222222] text-white rounded text-xs font-mono uppercase tracking-wider transition flex items-center gap-1.5"
                 disabled={processing}
               >
-                {processing ? "Releasing Funds..." : "Confirm & Release"}
+                {processing ? "Authorizing Transfer..." : "Confirm & Release"}
               </button>
             </div>
           </div>
