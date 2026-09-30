@@ -87,8 +87,8 @@ export default function DoubtSolver() {
           {/* Header */}
           <div className="p-4 bg-[#111111] text-[#F6F4EF] flex justify-between items-center border-b border-[#222222]">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded bg-[#222222] border border-[#333333] flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 text-[#B49A68]" />
+              <div className="w-7 h-7 rounded bg-white p-0.5 flex items-center justify-center shadow-sm">
+                <img src="/creditsea_logo_mark.png" alt="CreditSea" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h3 className="font-bold text-xs tracking-tight text-white">CreditSea Inquiries Desk</h3>

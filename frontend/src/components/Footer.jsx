@@ -11,11 +11,21 @@ export default function Footer() {
           
           {/* Brand & Mission (4 cols) */}
           <div className="md:col-span-4 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded bg-[#222222] border border-[#333333] flex items-center justify-center">
-                <span className="text-[#F6F4EF] font-mono text-xs font-bold">CS</span>
+            <Link to="/" className="flex items-center gap-3.5 group">
+              <div className="w-10 h-10 rounded-md bg-white p-1 flex items-center justify-center shadow-sm transition-transform group-hover:scale-105 duration-200">
+                <img src="/creditsea_logo_mark.png" alt="CreditSea" className="w-full h-full object-contain" />
               </div>
-              <span className="font-bold text-base text-[#F6F4EF] tracking-tight">CreditSea</span>
+              <div className="flex flex-col text-left">
+                <div className="flex items-baseline">
+                  <span className="font-serif font-bold text-lg text-white tracking-tight leading-none">
+                    Credit<span className="text-[#B49A68]">Sea</span>
+                  </span>
+                  <span className="text-[8px] font-mono text-[#B49A68] ml-0.5 relative -top-1 font-semibold">™</span>
+                </div>
+                <span className="text-[8.5px] font-mono tracking-[0.24em] text-[#969188] uppercase mt-1 leading-none">
+                  Capital Platform
+                </span>
+              </div>
             </Link>
             <p className="text-xs text-[#6F6B63] leading-relaxed max-w-sm">
               CreditSea operates an institutional-grade credit management and underwriting interface. We partner with regulated Non-Banking Financial Companies (NBFCs) to deliver structured short-term liquidity to verified salaried professionals.

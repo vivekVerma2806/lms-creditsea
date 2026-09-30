@@ -47,16 +47,21 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
-          {/* Minimalist Institutional Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg bg-[#111111] border border-[#171717] flex items-center justify-center transition-transform group-hover:scale-95 duration-200">
-              <span className="text-[#F6F4EF] font-mono text-xs font-bold tracking-tight">CS</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-[#171717] tracking-tight leading-none">
-                CreditSea
-              </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#6F6B63] mt-0.5">
+          {/* Official Brand Monogram & Typography */}
+          <Link to="/" className="flex items-center gap-3.5 group">
+            <img 
+              src="/creditsea_logo_mark.png" 
+              alt="CreditSea" 
+              className="h-10 w-auto object-contain transition-transform group-hover:scale-105 duration-200" 
+            />
+            <div className="flex flex-col justify-center">
+              <div className="flex items-baseline">
+                <span className="font-serif text-2xl font-bold text-[#171717] tracking-tight leading-none">
+                  Credit<span className="text-[#B49A68]">Sea</span>
+                </span>
+                <span className="text-[9px] font-mono text-[#B49A68] ml-0.5 relative -top-1 font-semibold">™</span>
+              </div>
+              <span className="text-[8.5px] font-mono uppercase tracking-[0.28em] text-[#6F6B63] mt-1 font-semibold leading-none">
                 Capital Platform
               </span>
             </div>

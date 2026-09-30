@@ -10,8 +10,8 @@ export default function HeroEditorialGraphic() {
         {/* Header Bar */}
         <div className="flex items-center justify-between pb-4 border-b border-[#EEEBE4]">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded bg-[#111111] flex items-center justify-center">
-              <span className="text-white font-mono text-xs font-bold tracking-tight">CS</span>
+            <div className="w-7 h-7 rounded bg-white p-0.5 border border-[#DDD9D0] flex items-center justify-center shadow-sm">
+              <img src="/creditsea_logo_mark.png" alt="CreditSea" className="w-full h-full object-contain" />
             </div>
             <div>
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">

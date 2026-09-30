@@ -78,15 +78,15 @@ export default function ExecutiveLayout() {
         
         {/* Monogram Brand Header */}
         <div className="h-20 flex items-center px-6 border-b border-[#222222]">
-          <Link to="/" className="flex items-center gap-3">
-            <span className="font-serif text-lg font-bold text-white tracking-widest border border-[#B49A68] px-2 py-0.5 rounded">
-              CS
-            </span>
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-md bg-white p-1 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200">
+              <img src="/creditsea_logo_mark.png" alt="CreditSea" className="w-full h-full object-contain" />
+            </div>
             <div className="flex flex-col">
-              <span className="font-serif text-sm font-medium text-white tracking-wider">
-                CREDITSEA
+              <span className="font-serif text-sm font-semibold text-white tracking-wider">
+                Credit<span className="text-[#B49A68]">Sea</span>
               </span>
-              <span className="text-[9px] font-mono tracking-widest text-[#B49A68] uppercase">
+              <span className="text-[8.5px] font-mono tracking-widest text-[#B49A68] uppercase">
                 Institutional Desk
               </span>
             </div>

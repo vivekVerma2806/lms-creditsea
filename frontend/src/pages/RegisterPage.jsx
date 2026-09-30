@@ -39,11 +39,23 @@ export default function RegisterPage() {
         
         {/* Header Monogram */}
         <div className="text-center space-y-3">
-          <Link to="/" className="inline-flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#111111] flex items-center justify-center">
-              <span className="text-[#F6F4EF] font-mono text-xs font-bold tracking-tight">CS</span>
+          <Link to="/" className="inline-flex flex-col items-center justify-center gap-2 group">
+            <img
+              src="/creditsea_logo_mark.png"
+              alt="CreditSea"
+              className="h-12 w-auto object-contain transition-transform group-hover:scale-105 duration-200"
+            />
+            <div className="flex flex-col items-center">
+              <div className="flex items-baseline">
+                <span className="font-serif text-2xl font-bold text-[#171717] tracking-tight leading-none">
+                  Credit<span className="text-[#B49A68]">Sea</span>
+                </span>
+                <span className="text-[9px] font-mono text-[#B49A68] ml-0.5 relative -top-1 font-semibold">™</span>
+              </div>
+              <span className="text-[9px] font-mono uppercase tracking-[0.26em] text-[#6F6B63] mt-1.5 font-semibold leading-none">
+                Capital Platform
+              </span>
             </div>
-            <span className="font-bold text-lg text-[#171717] tracking-tight">CreditSea</span>
           </Link>
           <div>
             <h1 className="text-2xl font-black text-[#171717] tracking-tight">Open Client Account</h1>
