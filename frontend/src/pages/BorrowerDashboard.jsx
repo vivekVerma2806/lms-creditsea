@@ -24,6 +24,9 @@ import {
   ChevronRight
 } from "lucide-react";
 import { API_URL } from "../lib/api";
+import InstitutionalGauge from "../components/presets/InstitutionalGauge";
+import NumberTicker from "../components/presets/NumberTicker";
+import BlurFade from "../components/presets/BlurFade";
 
 export default function BorrowerDashboard() {
   const navigate = useNavigate();
@@ -433,20 +436,22 @@ export default function BorrowerDashboard() {
                               </div>
                             </div>
 
-                            {/* Repayment Progress for Active Disbursed Loans */}
+                            {/* Repayment Progress for Active Disbursed Loans with InstitutionalGauge */}
                             {loan.status === "Disbursed" && (
-                              <div className="bg-[#F6F4EF] rounded p-3.5 border border-[#DDD9D0] space-y-2">
-                                <div className="flex justify-between items-center text-xs">
-                                  <span className="font-mono text-[11px] text-[#6F6B63] uppercase">Settlement Amortization</span>
-                                  <span className="font-mono text-xs font-semibold text-[#476353] tabular-nums">
-                                    {progress}% Settled (₹{Math.round(loan.amountPaid).toLocaleString()} / ₹{Math.round(loan.totalRepayment).toLocaleString()})
+                              <div className="bg-[#F6F4EF] rounded p-4 border border-[#DDD9D0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <InstitutionalGauge
+                                  percentage={progress}
+                                  size={52}
+                                  strokeWidth={4}
+                                  color="#476353"
+                                  label="Amortization Settlement"
+                                  sublabel={`₹${Math.round(loan.amountPaid).toLocaleString()} remitted of ₹${Math.round(loan.totalRepayment).toLocaleString()}`}
+                                />
+                                <div className="text-right sm:text-right w-full sm:w-auto">
+                                  <span className="text-[10px] font-mono uppercase text-[#969188] block">Balance Outstanding</span>
+                                  <span className="font-mono text-sm font-semibold text-[#874F4F] tabular-nums">
+                                    ₹{Math.round(balance).toLocaleString()}
                                   </span>
-                                </div>
-                                <div className="w-full bg-[#DDD9D0] rounded-full h-1.5 overflow-hidden">
-                                  <div 
-                                    className="bg-[#476353] h-1.5 rounded-full transition-all duration-500" 
-                                    style={{ width: `${progress}%` }}
-                                  ></div>
                                 </div>
                               </div>
                             )}

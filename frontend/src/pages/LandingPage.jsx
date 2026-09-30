@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import HeroSection from "../components/HeroSection";
 import LoanCalculator from "../components/LoanCalculator";
 import DoubtSolver from "../components/DoubtSolver";
-import HeroEditorialGraphic from "../components/HeroEditorialGraphic";
+import BlurFade from "../components/presets/BlurFade";
+import NumberTicker from "../components/presets/NumberTicker";
 import { 
   ShieldCheck, 
   ArrowUpRight, 
@@ -12,78 +14,22 @@ import {
   FileText, 
   Clock, 
   Percent, 
-  Building2,
+  Building2, 
   Lock
 } from "lucide-react";
 
+/**
+ * LandingPage
+ * Sourced from minimal.gallery / getlayers.ai / 21st.dev / Magic UI / cta.gallery
+ * Adapted to CreditSea private-banking aesthetic
+ */
 export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F6F4EF] text-[#171717]">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 border-b border-[#DDD9D0]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            
-            {/* Left Column: Editorial Typography (7 cols) */}
-            <div className="lg:col-span-7 space-y-7 text-left">
-              
-              {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#DDD9D0] rounded-full text-[11px] font-mono uppercase tracking-wider text-[#6F6B63]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B49A68]"></span>
-                Regulated Capital Allocation Platform
-              </div>
-              
-              {/* Hero Title */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#171717] tracking-tight leading-[1.08]">
-                Credit structured with absolute clarity.
-              </h1>
-              
-              {/* Supporting Statement */}
-              <p className="text-base sm:text-lg text-[#6F6B63] max-w-xl leading-relaxed font-normal">
-                Direct short-term liquidity up to ₹5,00,000 for verified salaried professionals. Regulated simple-interest terms powered by automated underwriting.
-              </p>
-
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Link
-                  to="/auth/register"
-                  className="px-6 py-3.5 bg-[#111111] hover:bg-[#222222] text-[#F6F4EF] font-semibold text-xs rounded-lg border border-[#111111] hover:border-[#B49A68] transition duration-150 flex items-center justify-center gap-2 shadow-sm"
-                >
-                  <span>Apply for Credit Facility</span>
-                  <ArrowUpRight className="w-4 h-4 text-[#B49A68]" />
-                </Link>
-                <a
-                  href="#calculator"
-                  className="px-6 py-3.5 bg-white border border-[#DDD9D0] hover:border-[#B8B2A8] text-[#171717] font-semibold text-xs rounded-lg transition duration-150 flex items-center justify-center gap-2"
-                >
-                  <span>Facility Calculator</span>
-                </a>
-              </div>
-
-              {/* Trust Indicators Bar */}
-              <div className="pt-6 border-t border-[#DDD9D0]/70 flex flex-wrap gap-x-8 gap-y-2.5 text-xs text-[#6F6B63]">
-                <span className="flex items-center gap-2 font-medium">
-                  <Check className="w-4 h-4 text-[#476353]" /> 12% Flat Simple Interest
-                </span>
-                <span className="flex items-center gap-2 font-medium">
-                  <Check className="w-4 h-4 text-[#476353]" /> Zero Pre-Payment Penalty
-                </span>
-                <span className="flex items-center gap-2 font-medium">
-                  <Check className="w-4 h-4 text-[#476353]" /> RBI Regulated NBFC Partner
-                </span>
-              </div>
-            </div>
-
-            {/* Right Column: Custom Bespoke Financial Graphic (5 cols) */}
-            <div className="lg:col-span-5 relative">
-              <HeroEditorialGraphic />
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* Unified Composed Hero Section */}
+      <HeroSection />
 
       {/* Institutional Trust & NBFC Compliance Banner */}
       <section className="bg-[#EEEBE4] border-b border-[#DDD9D0] py-7">
@@ -94,7 +40,7 @@ export default function LandingPage() {
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-[#171717] block">
+                <span className="text-xs font-semibold text-[#171717] block">
                   Regulated Lending Partner · Meghdoot Mercantile Private Limited
                 </span>
                 <span className="text-[11px] text-[#6F6B63] font-mono">
@@ -113,132 +59,153 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Editorial Statistics */}
+      {/* Editorial Statistics with NumberTicker preset */}
       <section className="py-16 border-b border-[#DDD9D0] bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-[#DDD9D0] text-left">
-            <div className="pt-4 md:pt-0 md:px-6 first:pl-0">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
-                Disbursed Volume
-              </span>
-              <div className="text-3xl sm:text-4xl font-black text-[#171717] mt-1 tabular-nums tracking-tight">
-                ₹500 Cr+
+          <BlurFade delay={0.1} yOffset={8}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-[#DDD9D0] text-left">
+              <div className="pt-4 md:pt-0 md:px-6 first:pl-0">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
+                  Disbursed Volume
+                </span>
+                <div className="text-3xl sm:text-4xl font-serif font-medium text-[#171717] mt-1 tracking-tight">
+                  <NumberTicker value={500} prefix="₹" suffix=" Cr+" delay={0.1} />
+                </div>
+                <p className="text-xs text-[#969188] mt-1 font-light">Direct liquidity disbursed across India</p>
               </div>
-              <p className="text-xs text-[#969188] mt-1">Direct liquidity disbursed across India</p>
-            </div>
 
-            <div className="pt-4 md:pt-0 md:px-6">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
-                Verified Borrowers
-              </span>
-              <div className="text-3xl sm:text-4xl font-black text-[#171717] mt-1 tabular-nums tracking-tight">
-                2,00,000+
+              <div className="pt-4 md:pt-0 md:px-6">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
+                  Verified Borrowers
+                </span>
+                <div className="text-3xl sm:text-4xl font-serif font-medium text-[#171717] mt-1 tracking-tight">
+                  <NumberTicker value={200000} suffix="+" delay={0.15} />
+                </div>
+                <p className="text-xs text-[#969188] mt-1 font-light">Salaried profiles underwritten</p>
               </div>
-              <p className="text-xs text-[#969188] mt-1">Salaried profiles underwritten</p>
-            </div>
 
-            <div className="pt-4 md:pt-0 md:px-6">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
-                Decision Latency
-              </span>
-              <div className="text-3xl sm:text-4xl font-black text-[#171717] mt-1 tabular-nums tracking-tight">
-                &lt; 10 Min
+              <div className="pt-4 md:pt-0 md:px-6">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
+                  Decision Latency
+                </span>
+                <div className="text-3xl sm:text-4xl font-serif font-medium text-[#171717] mt-1 tracking-tight">
+                  <span className="font-mono text-xl text-[#969188] mr-1">&lt;</span>
+                  <NumberTicker value={10} suffix=" Min" delay={0.2} />
+                </div>
+                <p className="text-xs text-[#969188] mt-1 font-light">Automated Business Rule Engine (BRE)</p>
               </div>
-              <p className="text-xs text-[#969188] mt-1">Automated Business Rule Engine (BRE)</p>
-            </div>
 
-            <div className="pt-4 md:pt-0 md:px-6 last:pr-0">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
-                Repayment Compliance
-              </span>
-              <div className="text-3xl sm:text-4xl font-black text-[#476353] mt-1 tabular-nums tracking-tight">
-                98.5%
+              <div className="pt-4 md:pt-0 md:px-6 last:pr-0">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#6F6B63] block">
+                  Repayment Compliance
+                </span>
+                <div className="text-3xl sm:text-4xl font-serif font-medium text-[#476353] mt-1 tracking-tight">
+                  <NumberTicker value={98.5} decimalPlaces={1} suffix="%" delay={0.25} />
+                </div>
+                <p className="text-xs text-[#969188] mt-1 font-light">On-time facility closure rate</p>
               </div>
-              <p className="text-xs text-[#969188] mt-1">On-time facility closure rate</p>
             </div>
-          </div>
+          </BlurFade>
         </div>
       </section>
 
       {/* Core Principles Section */}
       <section className="py-20 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-[#DDD9D0]">
-        <div className="max-w-2xl mb-14 text-left space-y-2">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-bold">
-            Operational Principles
-          </span>
-          <h2 className="text-3xl md:text-4xl font-black text-[#171717] tracking-tight">
-            Built for certainty, not speculation.
-          </h2>
-          <p className="text-sm text-[#6F6B63] font-normal leading-relaxed">
-            Every advance issued by CreditSea is grounded in strict underwriting discipline, contractual transparency, and zero predatory fee structures.
-          </p>
-        </div>
+        <BlurFade delay={0.1} yOffset={8}>
+          <div className="max-w-2xl mb-14 text-left space-y-2">
+            <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-semibold">
+              Operational Principles
+            </span>
+            <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#171717] tracking-tight">
+              Built for certainty, not speculation.
+            </h2>
+            <p className="text-sm text-[#6F6B63] font-light leading-relaxed">
+              Every advance issued by CreditSea is grounded in strict underwriting discipline, contractual transparency, and zero predatory fee structures.
+            </p>
+          </div>
+        </BlurFade>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Pillar 1 */}
-          <div className="bg-white p-7 rounded-xl border border-[#DDD9D0] space-y-4 hover:border-[#B8B2A8] transition duration-200">
-            <div className="w-10 h-10 rounded-lg bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
-              <Clock className="w-5 h-5 text-[#B49A68]" />
+          <BlurFade delay={0.15} yOffset={8}>
+            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
+                  <Clock className="w-5 h-5 text-[#B49A68]" />
+                </div>
+                <h3 className="text-lg font-serif font-medium text-[#171717]">Algorithmic Underwriting</h3>
+                <p className="text-xs text-[#6F6B63] font-light leading-relaxed">
+                  Our automated Business Rule Engine evaluates verified salary slips, PAN credentials, and net monthly income in under 10 minutes without manual friction.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+                BRE Rule: Age 23–50 · Net Salary ₹25K+
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-[#171717]">Algorithmic Underwriting</h3>
-            <p className="text-xs text-[#6F6B63] leading-relaxed">
-              Our automated Business Rule Engine evaluates verified salary slips, PAN credentials, and net monthly income in under 10 minutes without manual friction.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#171717] flex items-center gap-1">
-              BRE Criteria: Age 23–50 · Min ₹25K Salary
-            </div>
-          </div>
+          </BlurFade>
 
           {/* Pillar 2 */}
-          <div className="bg-white p-7 rounded-xl border border-[#DDD9D0] space-y-4 hover:border-[#B8B2A8] transition duration-200">
-            <div className="w-10 h-10 rounded-lg bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
-              <Percent className="w-5 h-5 text-[#B49A68]" />
+          <BlurFade delay={0.2} yOffset={8}>
+            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
+                  <Percent className="w-5 h-5 text-[#B49A68]" />
+                </div>
+                <h3 className="text-lg font-serif font-medium text-[#171717]">Fixed Simple Interest</h3>
+                <p className="text-xs text-[#6F6B63] font-light leading-relaxed">
+                  We apply a flat 12% annual simple interest rate. Zero compounding interest, zero hidden platform charges, and zero early settlement penalties.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+                Amortization: (P × 12% × T) ÷ 365
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-[#171717]">Fixed Simple Interest</h3>
-            <p className="text-xs text-[#6F6B63] leading-relaxed">
-              We apply a flat 12% annual simple interest rate. Zero compounding interest, zero hidden platform charges, and zero early settlement penalties.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#171717] flex items-center gap-1">
-              Formula: (Principal × 12% × Days) ÷ 365
-            </div>
-          </div>
+          </BlurFade>
 
           {/* Pillar 3 */}
-          <div className="bg-white p-7 rounded-xl border border-[#DDD9D0] space-y-4 hover:border-[#B8B2A8] transition duration-200">
-            <div className="w-10 h-10 rounded-lg bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
-              <Building2 className="w-5 h-5 text-[#B49A68]" />
+          <BlurFade delay={0.25} yOffset={8}>
+            <div className="bg-white p-7 rounded-lg border border-[#DDD9D0] space-y-4 hover:border-[#B49A68] transition duration-200 h-full flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-10 h-10 rounded bg-[#F6F4EF] border border-[#DDD9D0] flex items-center justify-center text-[#171717]">
+                  <Building2 className="w-5 h-5 text-[#B49A68]" />
+                </div>
+                <h3 className="text-lg font-serif font-medium text-[#171717]">Partner Escrow Settlement</h3>
+                <p className="text-xs text-[#6F6B63] font-light leading-relaxed">
+                  Disbursements and repayments route directly through dedicated escrow accounts operated by Meghdoot Mercantile Pvt Ltd (RBI-registered NBFC).
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#EEEBE4] text-[11px] font-mono text-[#6F6B63]">
+                Escrow Node · HDFC Bank Partner
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-[#171717]">Partner Escrow Settlement</h3>
-            <p className="text-xs text-[#6F6B63] leading-relaxed">
-              Disbursements and repayments route directly through dedicated escrow accounts operated by Meghdoot Mercantile Pvt Ltd (RBI-registered NBFC).
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-[#171717] flex items-center gap-1">
-              Escrow Protocol · HDFC Bank Partner
-            </div>
-          </div>
+          </BlurFade>
 
         </div>
       </section>
 
       {/* Facility Calculator Section */}
       <section id="calculator" className="py-20 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mb-12 text-left space-y-2">
-          <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-bold">
-            Interactive Planning Tool
-          </span>
-          <h2 className="text-3xl md:text-4xl font-black text-[#171717] tracking-tight">
-            Calculate your facility terms.
-          </h2>
-          <p className="text-sm text-[#6F6B63] font-normal leading-relaxed">
-            Adjust principal and tenure to review the transparent simple-interest repayment breakdown before submitting an application.
-          </p>
-        </div>
+        <BlurFade delay={0.1} yOffset={8}>
+          <div className="max-w-2xl mb-12 text-left space-y-2">
+            <span className="text-xs font-mono uppercase tracking-wider text-[#B49A68] font-semibold">
+              Interactive Planning Tool
+            </span>
+            <h2 className="text-3xl md:text-4xl font-serif font-medium text-[#171717] tracking-tight">
+              Calculate your facility terms.
+            </h2>
+            <p className="text-sm text-[#6F6B63] font-light leading-relaxed">
+              Adjust principal and tenure to review the transparent simple-interest repayment breakdown before submitting an application.
+            </p>
+          </div>
+        </BlurFade>
 
-        <LoanCalculator />
+        <BlurFade delay={0.15} yOffset={10}>
+          <LoanCalculator />
+        </BlurFade>
       </section>
 
-      {/* Institutional Knowledge Desk widget */}
+      {/* Institutional Inquiries Desk widget */}
       <DoubtSolver />
 
       <Footer />
