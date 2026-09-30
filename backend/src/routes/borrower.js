@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { authenticate } from '../middlewares/auth.js';
 import { BorrowerProfile, EmploymentMode } from '../models/BorrowerProfile.js';
-import { Loan } from '../models/Loan.js';
+import { Loan, LoanStatus } from '../models/Loan.js';
+import { Payment } from '../models/Payment.js';
 import multer from 'multer';
 import path from 'path';
 
@@ -113,6 +114,77 @@ router.post('/loan', async (req, res) => {
     res.json({ message: 'Loan application submitted', loan });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+// ── Self-Serve Borrower Repayment ─────────────────────────────────────────────
+router.post('/repay', async (req, res) => {
+  try {
+    const { loanId, utr, amount } = req.body;
+
+    if (!loanId || !utr || !amount || Number(amount) <= 0) {
+      return res.status(400).json({ message: 'Valid loan ID, UTR number, and positive payment amount are required' });
+    }
+
+    const profile = await BorrowerProfile.findOne({ userId: req.user.id });
+    if (!profile) return res.status(404).json({ message: 'Borrower profile not found' });
+
+    const loan = await Loan.findOne({ _id: loanId, borrowerId: profile._id });
+    if (!loan) return res.status(404).json({ message: 'Loan not found or does not belong to your account' });
+
+    if (loan.status !== LoanStatus.Disbursed) {
+      return res.status(400).json({ message: `Cannot submit payment for loan with status: ${loan.status}` });
+    }
+
+    const existingPayment = await Payment.findOne({ utr });
+    if (existingPayment) {
+      return res.status(400).json({ message: 'This UTR has already been recorded. Please check your transaction details.' });
+    }
+
+    const payAmt = Number(amount);
+    const remainingDue = loan.totalRepayment - loan.amountPaid;
+    if (payAmt > remainingDue) {
+      return res.status(400).json({ message: `Payment amount (₹${payAmt}) cannot exceed remaining balance (₹${Math.round(remainingDue)})` });
+    }
+
+    const payment = await Payment.create({
+      loanId: loan._id,
+      utr,
+      amount: payAmt,
+      date: new Date(),
+    });
+
+    loan.amountPaid += payAmt;
+    if (loan.amountPaid >= loan.totalRepayment) {
+      loan.status = LoanStatus.Closed;
+    }
+    await loan.save();
+
+    res.json({
+      message: 'Repayment submitted successfully!',
+      payment,
+      loanStatus: loan.status,
+      amountPaid: loan.amountPaid,
+      remainingBalance: Math.max(0, loan.totalRepayment - loan.amountPaid),
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// ── Borrower Loan Payment History ─────────────────────────────────────────────
+router.get('/loans/:id/payments', async (req, res) => {
+  try {
+    const profile = await BorrowerProfile.findOne({ userId: req.user.id });
+    if (!profile) return res.status(404).json({ message: 'Borrower profile not found' });
+
+    const loan = await Loan.findOne({ _id: req.params.id, borrowerId: profile._id });
+    if (!loan) return res.status(404).json({ message: 'Loan not found' });
+
+    const payments = await Payment.find({ loanId: loan._id }).sort({ date: -1 });
+    res.json({ payments, loan });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
