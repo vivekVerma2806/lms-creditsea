@@ -169,43 +169,43 @@ Verified assets available in the repository (`frontend/public/`):
 CreditSea utilizes a decoupled Client-Server architecture. The React Single Page Application (SPA) communicates with the Node.js/Express REST API over HTTPS/JSON, authenticated through stateless JWT Bearer headers.
 
 ```mermaid
-graph TD
+flowchart TD
     subgraph ClientLayer ["Client Presentation Layer (Vite + React 18)"]
-        UI_Guest["Public Visitor / Landing Page\n(Calculator, FAQs, Doubt Solver)"]
-        UI_Borrower["Borrower Portal\n(KYC Onboarding, Ledger, Repayment)"]
-        UI_Executive["Executive Operations Hub\n(Sales, Sanction, Disburse, Collection)"]
+        UI_Guest["Public Visitor / Landing Page<br/>(Calculator, FAQs, Doubt Solver)"]
+        UI_Borrower["Borrower Portal<br/>(KYC Onboarding, Ledger, Repayment)"]
+        UI_Executive["Executive Operations Hub<br/>(Sales, Sanction, Disburse, Collection)"]
     end
 
     subgraph NetworkGateway ["Edge & Routing Layer"]
         VercelCDN["Vercel Global CDN Edge"]
-        CORSGuard["Express CORS Security Filter\n(Origin Whitelist & Credentials)"]
+        CORSGuard["Express CORS Security Filter<br/>(Origin Whitelist & Credentials)"]
     end
 
     subgraph ServerLayer ["Backend Application Server (Express 5 + Node.js)"]
-        AuthMid["JWT Authentication Middleware\n(Bearer Token Extraction & Verification)"]
-        RBACMid["Role-Based Access Control Guard\n(Admin / Sales / Sanction / Disburse / Coll)"]
+        AuthMid["JWT Authentication Middleware<br/>(Bearer Token Extraction & Verification)"]
+        RBACMid["Role-Based Access Control Guard<br/>(Admin / Sales / Sanction / Disburse / Coll)"]
         
         subgraph RouteHandlers ["Express Controllers & Endpoints"]
-            AuthRouter["/api/auth\n(Register, Login, Role Seeding)"]
-            BorrowerRouter["/api/borrower\n(Profile, Uploads, Facilities, Repay)"]
-            DashboardRouter["/api/dashboard\n(Stats, Leads, Sanctions, Disburse, Ledger)"]
+            AuthRouter["/api/auth<br/>(Register, Login, Role Seeding)"]
+            BorrowerRouter["/api/borrower<br/>(Profile, Uploads, Facilities, Repay)"]
+            DashboardRouter["/api/dashboard<br/>(Stats, Leads, Sanctions, Disburse, Ledger)"]
         end
 
-        BRE["Business Rule Engine (BRE)\n(Age, Salary, PAN, Employment, Terms)"]
-        MulterEng["Multer Multipart Engine\n(5MB Bound, Mime Filter, Disk Storage)"]
+        BRE["Business Rule Engine (BRE)<br/>(Age, Salary, PAN, Employment, Terms)"]
+        MulterEng["Multer Multipart Engine<br/>(5MB Bound, Mime Filter, Disk Storage)"]
     end
 
     subgraph DataLayer ["Data & Storage Layer"]
-        MongooseODM["Mongoose ODM Models\n(User, BorrowerProfile, Loan, Payment)"]
-        MongoAtlas[("MongoDB Atlas Cloud\n(Document Collections & Indexes)")]
-        DiskStorage["Server Disk Storage\n(uploads/ Salary Slips)"]
+        MongooseODM["Mongoose ODM Models<br/>(User, BorrowerProfile, Loan, Payment)"]
+        MongoAtlas[("MongoDB Atlas Cloud<br/>(Document Collections & Indexes)")]
+        DiskStorage["Server Disk Storage<br/>(uploads/ Salary Slips)"]
     end
 
     UI_Guest --> VercelCDN
     UI_Borrower --> VercelCDN
     UI_Executive --> VercelCDN
 
-    VercelCDN -->|REST HTTPS Requests| CORSGuard
+    VercelCDN -->|"REST HTTPS Requests"| CORSGuard
     CORSGuard --> AuthMid
     AuthMid --> RBACMid
 
@@ -221,7 +221,7 @@ graph TD
     BorrowerRouter --> MongooseODM
     DashboardRouter --> MongooseODM
 
-    MongooseODM <-->|Mongoose Driver (TLS/SRV)| MongoAtlas
+    MongooseODM <-- "Mongoose Driver (TLS/SRV)" --> MongoAtlas
 ```
 
 ---
@@ -232,34 +232,34 @@ The backend follows an Express route-middleware-model pipeline designed for pred
 
 ```mermaid
 flowchart TD
-    Req([Incoming HTTP Request]) --> CORS[CORS Handler\nOrigin Check & Preflight OPTIONS]
-    CORS --> Parser[Body Parsers\nexpress.json & express.static uploads]
+    Req(["Incoming HTTP Request"]) --> CORS["CORS Handler<br/>Origin Check & Preflight OPTIONS"]
+    CORS --> Parser["Body Parsers<br/>express.json & express.static uploads"]
     
-    Parser --> PublicCheck{Target Route\nPublic or Protected?}
+    Parser --> PublicCheck{"Target Route<br/>Public or Protected?"}
     
-    PublicCheck -->|Public: /api/auth/register, /login, /seed| AuthCtrl[Auth Route Handler]
-    PublicCheck -->|Protected Route| AuthMw[authenticate Middleware\nHeader Bearer Token Validation]
+    PublicCheck -->|"Public: /api/auth/register, /login, /seed"| AuthCtrl["Auth Route Handler"]
+    PublicCheck -->|"Protected Route"| AuthMw["authenticate Middleware<br/>Header Bearer Token Validation"]
     
-    AuthMw -->|Missing or Invalid Token| Resp401[401 Unauthorized Response]
-    AuthMw -->|Valid Token Decoded| SetReqUser[Populate req.user: { id, role }]
+    AuthMw -->|"Missing or Invalid Token"| Resp401["401 Unauthorized Response"]
+    AuthMw -->|"Valid Token Decoded"| SetReqUser["Populate req.user: { id, role }"]
     
-    SetReqUser --> RBACCheck{Route requires\nspecific Role?}
+    SetReqUser --> RBACCheck{"Route requires<br/>specific Role?"}
     
-    RBACCheck -->|Role Authorized or Role.Admin| Controller[Target Router Controller]
-    RBACCheck -->|Unauthorized Role| Resp403[403 Access Denied Response]
+    RBACCheck -->|"Role Authorized or Role.Admin"| Controller["Target Router Controller"]
+    RBACCheck -->|"Unauthorized Role"| Resp403["403 Access Denied Response"]
     
-    Controller --> FileMw{Multipart File\nUpload?}
-    FileMw -->|Yes| Multer[Multer Disk Storage\nMIME & 5MB Limit Validation]
-    FileMw -->|No| Logic[Execute Controller Business Logic]
+    Controller --> FileMw{"Multipart File<br/>Upload?"}
+    FileMw -->|"Yes"| Multer["Multer Disk Storage<br/>MIME & 5MB Limit Validation"]
+    FileMw -->|"No"| Logic["Execute Controller Business Logic"]
     Multer --> Logic
 
-    Logic --> MongooseQuery[Execute Mongoose Schema Operation\nfind, findOne, create, save]
-    MongooseQuery --> MongoDB[(MongoDB Atlas)]
+    Logic --> MongooseQuery["Execute Mongoose Schema Operation<br/>find, findOne, create, save"]
+    MongooseQuery --> MongoDB[("MongoDB Atlas")]
     MongoDB --> MongooseQuery
-    MongooseQuery --> SendJSON([Send 200/201 JSON Response])
+    MongooseQuery --> SendJSON(["Send 200/201 JSON Response"])
     
-    Logic -.->|Exception Thrown| CatchErr[500 Server Error Handler]
-    CatchErr --> SendErr([Send Error JSON Response])
+    Logic -.->|"Exception Thrown"| CatchErr["500 Server Error Handler"]
+    CatchErr --> SendErr(["Send Error JSON Response"])
 ```
 
 ### Request Lifecycle Breakdown
@@ -1028,16 +1028,16 @@ npm run build
 ```mermaid
 flowchart LR
     subgraph ClientHosting ["Frontend Hosting (Vercel)"]
-        Browser[Client Browser] <--> VercelEdge[Vercel CDN Edge Network\nStatic SPA Assets + vercel.json rewrites]
+        Browser["Client Browser"] <--> VercelEdge["Vercel CDN Edge Network<br/>Static SPA Assets + vercel.json rewrites"]
     end
 
     subgraph ServerHosting ["Backend Compute (Render / Cloud Container)"]
-        VercelEdge <-->|HTTPS API Calls| RenderService[Node.js + Express 5 Service\nPORT: 5000 / Dynamic Container Port]
-        RenderService --> LocalDisk[(uploads/ Volume)]
+        VercelEdge <-- "HTTPS API Calls" --> RenderService["Node.js + Express 5 Service<br/>PORT: 5000 / Dynamic Container Port"]
+        RenderService --> LocalDisk[("uploads/ Volume")]
     end
 
     subgraph CloudDB ["Database Layer (MongoDB Atlas)"]
-        RenderService <-->|TLS Mongoose Connection| AtlasCluster[MongoDB Atlas Cloud Cluster\nPrimary + Secondary Replicas]
+        RenderService <-- "TLS Mongoose Connection" --> AtlasCluster["MongoDB Atlas Cloud Cluster<br/>Primary + Secondary Replicas"]
     end
 ```
 
