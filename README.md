@@ -1,11 +1,22 @@
-# CreditSea — Enterprise Loan Management System (LMS)
+# 💳 CreditSea — Enterprise Loan Management System & Credit Underwriting Ecosystem
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-lms--creditsea--iota.vercel.app-476353?style=for-the-badge&logo=vercel)](https://lms-creditsea-iota.vercel.app)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-111111?style=for-the-badge&logo=github)](https://github.com/vivekVerma2806/lms-creditsea.git)
-[![React](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite%205-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express%205-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/Database-MongoDB%20Atlas%20%7C%20Mongoose-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
-[![License](https://img.shields.io/badge/License-MIT-B49A68?style=for-the-badge)](./LICENSE)
+[![Live Demo](https://img.shields.io/badge/LIVE%20DEMO-VERCEL-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://credit-sea-tan.vercel.app/)
+[![Backend API](https://img.shields.io/badge/BACKEND%20API-RENDER-46E3B7?style=for-the-badge&logo=render&logoColor=000000)](https://credit-sea-tan.vercel.app/)
+[![Stack](https://img.shields.io/badge/STACK-MERN%20FULLSTACK-059669?style=for-the-badge&logo=mongodb&logoColor=white)](#5-technology-stack)
+[![React](https://img.shields.io/badge/REACT-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/NODE.JS-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/EXPRESS-5.2-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Database](https://img.shields.io/badge/DATABASE-MONGO%20ATLAS-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Lending Partner](https://img.shields.io/badge/NBFC%20PARTNER-MEGHDOOT%20MERCANTILE-8B5CF6?style=for-the-badge&logo=shield&logoColor=white)](https://credit-sea-tan.vercel.app/)
+[![Tailwind CSS](https://img.shields.io/badge/TAILWIND%20CSS-V4.0-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Security](https://img.shields.io/badge/SECURITY-JWT%20%2B%20RBAC-D97706?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](#14-security-implementation--access-control)
+[![License](https://img.shields.io/badge/LICENSE-MIT-B49A68?style=for-the-badge)](./LICENSE)
+
+### *Credit Structured With Absolute Clarity.*
+
+A production-ready, institutional Loan Management System (LMS) combining an automated Business Rule Engine (BRE), dual-portal borrower/executive workflows, idempotent UTR ledger settlement, and enterprise 6-tier Role-Based Access Control (RBAC) under RBI NBFC guidelines.
+
+[Live Application](https://credit-sea-tan.vercel.app/) • [System Architecture](#6-system-architecture) • [Backend Lifecycle](#7-detailed-backend-architecture) • [Database Design](#8-database-design-and-data-models) • [API Documentation](#10-api-specification--endpoint-documentation) • [Interview Walkthrough](#21-technical-interview-preparation--defense-guide)
 
 ---
 
@@ -69,7 +80,7 @@ Traditional retail lending systems suffer from severe friction: opaque interest 
 
 ## 2. Live Demo and Project Links
 
-- **Live Production Deployment**: [https://lms-creditsea-iota.vercel.app](https://lms-creditsea-iota.vercel.app)
+- **Live Production Deployment**: [https://credit-sea-tan.vercel.app/](https://credit-sea-tan.vercel.app/)
 - **Source Code Repository**: [https://github.com/vivekVerma2806/lms-creditsea.git](https://github.com/vivekVerma2806/lms-creditsea.git)
 - **Backend API Base URL (Local)**: `http://localhost:5000`
 - **Frontend Client URL (Local)**: `http://localhost:3000`
@@ -253,7 +264,7 @@ flowchart TD
 
 ### Request Lifecycle Breakdown
 1. **Transport & Ingress**: Requests arrive via HTTP/HTTPS at `backend/src/index.js`.
-2. **CORS Validation**: Evaluates origin against localhost ports (`3000`, `5173`) and Vercel domains (`https://lms-creditsea-iota.vercel.app`). Unrecognized origins receive a CORS rejection.
+2. **CORS Validation**: Evaluates origin against localhost ports (`3000`, `5173`) and Vercel domains (`https://credit-sea-tan.vercel.app/`). Unrecognized origins receive a CORS rejection.
 3. **Static File Expose**: `/uploads` is statically mounted with `express.static('uploads')` to serve salary slips for KYC audits.
 4. **JWT Extraction**: `middlewares/auth.js` strips the `Bearer ` prefix, validates the token against `process.env.JWT_SECRET`, and attaches decoded claims (`id`, `role`) to `req.user`.
 5. **RBAC Authorization**: `middlewares/rbac.js` enforces that `req.user.role === Role.Admin` or is explicitly permitted in the route whitelist array.
@@ -939,6 +950,7 @@ Cross-Origin Resource Sharing is restricted to authorized web domains:
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
+  'https://credit-sea-tan.vercel.app',
   'https://lms-creditsea-iota.vercel.app'
 ];
 ```

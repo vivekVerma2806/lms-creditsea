@@ -21,6 +21,7 @@ if (!fs.existsSync('uploads')) {
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173', // standard Vite dev server port
+  'https://credit-sea-tan.vercel.app',
   'https://lms-creditsea-iota.vercel.app'
 ];
 
